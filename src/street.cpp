@@ -5,7 +5,7 @@
 #include <QPointF>
 
 #include "stop.h"
-#include "Coordinate.h"
+
 
 
 using namespace std;
