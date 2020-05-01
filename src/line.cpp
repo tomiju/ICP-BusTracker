@@ -9,6 +9,7 @@
 #include <QPointF>
 #include <QGraphicsScene>
 #include <QDebug>
+#include <QTime>
 
 
 Line::Line(QString id,QGraphicsScene* scene)
@@ -16,10 +17,11 @@ Line::Line(QString id,QGraphicsScene* scene)
     this->id = id;
     this->time = 0;
     this->scene = scene;
-    this->vehicleNum = 1;
+    this->vehicleNum = 0;
     this->timetable = {};
 
 }
+
 
 void Line::addStreet(Street* str)
 {
@@ -29,18 +31,17 @@ void Line::addStreet(Street* str)
 }
 
 
-
 void Line::addStop(Stop *stop)
 {
     stops.push_back(stop);
 }
 
 
-
 void Line::removeFirstVehicle()
 {
     this->vehicle.erase(this->vehicle.begin());
 }
+
 
 Stop* Line::getStop(unsigned n)
 {
@@ -51,6 +52,7 @@ Stop* Line::getStop(unsigned n)
     }
 }
 
+
 Street *Line::getStreet(unsigned n)
 {
     if(streets.size() > n ){
@@ -59,6 +61,7 @@ Street *Line::getStreet(unsigned n)
         return nullptr;
     }
 }
+
 
 QPointF *Line::getCommonPoint(unsigned n1, unsigned n2)
 {
@@ -86,41 +89,47 @@ QPointF *Line::getCommonPoint(unsigned n1, unsigned n2)
         return str1->getCoordinates()[0];
     }
 
-
-
     return nullptr;
-
 }
 
 void Line::addToTimeTable(std::vector<QString> times)
 {
+    vector<unsigned> v = {};
 
-    timetable.push_back(times);
+    for(auto t : times){
+        QTime time = QTime::fromString(t, "hh:mm");
+        v.push_back(60*time.minute()+3600*time.hour());
+    }
+
+    timetable.push_back(v);
 }
+
 
 void Line::touch()
 {
+    for(auto timeTablePart : timetable){
+        if(time == timeTablePart.at(0) ){
+            this->vehicleNum += 1;
+            QString string = "Vehicle"  + QString::number(vehicleNum);
 
-    if(time % 60 == 0 ){
-        QString string = "Vehicle"  + QString::number(vehicleNum);
-        this->vehicleNum += 1;
-        Drawable draw;
+            Drawable draw;
 
-        auto startStop = this->stops.at(0);
-        Vehicle* v = new Vehicle(string,startStop->getCoordinate(),this);
-        draw.drawVehicle(v, this->scene);
-        v->setRoute(200);
-        this->vehicle.push_back(v);
+            auto startStop = this->stops.at(0);
+            Vehicle* v = new Vehicle(string,startStop->getCoordinate(),this, timeTablePart);
+            draw.drawVehicle(v, this->scene);
+            v->setRoute();
+            this->vehicle.push_back(v);
+        }
     }
 
     for (auto it = this->vehicle.begin() ; it != this->vehicle.end(); ++it){
         Vehicle* v = *it;
-
         v->touch();
     }
 
     time += 1;
 }
+
 
 void Line::pass()
 {

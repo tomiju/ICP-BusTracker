@@ -9,13 +9,15 @@
 #include <QLineF>
 #include <QPainterPath>
 
-Vehicle::Vehicle(QString id, QPointF *c,Line* line)
+Vehicle::Vehicle(QString id, QPointF *c,Line* line, std::vector<unsigned> t)
 {
     this->id = id;
     this->c = new QPointF(c->x(),c->y());
     this->line = line;
     this->currentStreet = 0;
     this->nextStop = 0;
+    this->times = t;
+    dead = false;
 
 }
 
@@ -32,9 +34,9 @@ QString Vehicle::getId()
 }
 
 
-void Vehicle::setRoute(int timeNew)
+void Vehicle::setRoute()
 {
-    routeTime = timeNew;
+
     time = 0;
     nextStop += 1;
     unsigned streetN = this->currentStreet;
@@ -42,15 +44,19 @@ void Vehicle::setRoute(int timeNew)
     auto stop = line->getStop(nextStop);
 
     if(stop == nullptr ){
+
         auto scene = elipse->scene();
         scene->removeItem(elipse);
         scene->removeItem(txt);
         delete elipse;
         delete txt;
-        line->removeFirstVehicle();
-        delete this;
+        //line->removeFirstVehicle();
+        //delete this;
+        dead = true;
         return;
     }
+
+    routeTime = times.at(nextStop) - times.at(nextStop - 1);
 
     path = new QPainterPath(*this->c);
 
@@ -78,9 +84,13 @@ void Vehicle::setRoute(int timeNew)
 
 void Vehicle::touch()
 {
+    if(dead){
+        return;
+    }
+
 
     if(this->time >= this->routeTime){
-        setRoute(100);
+        setRoute();
         return;
     }
 

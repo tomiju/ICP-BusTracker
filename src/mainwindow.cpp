@@ -22,16 +22,16 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-
     mainTime = 0;
 
     connect(ui->ZoomIn, &QPushButton::clicked, this, &MainWindow::zoomIn);
     connect(ui->ZoomOut, &QPushButton::clicked, this, &MainWindow::zoomOut);
+    connect(ui->changeTimeButton,&QPushButton::clicked,this,&MainWindow::setTimer);
+    connect(ui->stopPlayButton,&QPushButton::clicked,this,&MainWindow::stopPlay);
 
     QGraphicsScene* scene = new QGraphicsScene(ui->graphicsView);
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
-
 
     QPointF* c1 = new QPointF(0,0);
     QPointF* c2 = new QPointF(100,0);
@@ -89,8 +89,6 @@ MainWindow::MainWindow(QWidget *parent)
     timer->setInterval(1000);
     timer->start();
 
-    connect(ui->changeTimeButton,&QPushButton::clicked,this,&MainWindow::setTimer);
-    connect(ui->stopPlayButton,&QPushButton::clicked,this,&MainWindow::stopPlay);
 }
 
 
@@ -125,12 +123,12 @@ void MainWindow::setTimer()
     static int speed = 0;
     speed += 1;
 
-    if(speed > 9){
+    if(speed > 8){
         speed = 0;
     }
 
     this->timer->setInterval(t[speed]);
-    ui->changeTimeButton->setText("Speed: " + QString::number(speed + 1) );
+    ui->changeTimeButton->setText("Speed 1:" + QString::number(1000/t[speed]) );
 }
 
 
@@ -138,8 +136,10 @@ void MainWindow::stopPlay()
 {
     if(this->timer->isActive()){
         this->timer->stop();
+        ui->stopPlayButton->setText("Play");
     }else{
         this->timer->start();
+        ui->stopPlayButton->setText("Stop");
     }
 }
 

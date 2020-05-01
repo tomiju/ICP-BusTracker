@@ -39,11 +39,11 @@ private:
     std::vector<Vehicle*> vehicle;
     std::vector<Street*> streets;
     std::vector<Stop*> stops;
-    std::vector<std::vector<QString>> timetable;
-    int time;
+    std::vector<std::vector<unsigned>> timetable;
+    unsigned time;
     QString id;
     QGraphicsScene* scene;
-    int vehicleNum;
+    unsigned vehicleNum;
 
 };
 

@@ -46,14 +46,14 @@
       <item>
        <widget class="QPushButton" name="changeTimeButton">
         <property name="text">
-         <string>Speed: 1</string>
+         <string>Speed 1:1</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="stopPlayButton">
         <property name="text">
-         <string>Stop/Play</string>
+         <string>Stop</string>
         </property>
        </widget>
       </item>

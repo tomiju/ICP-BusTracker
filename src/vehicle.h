@@ -23,26 +23,27 @@ public:
 
    QString getId();
 
-   Vehicle(QString id, QPointF* c,Line* line);
+   Vehicle(QString id, QPointF* c,Line* line,std::vector<unsigned> t);
 
    QGraphicsEllipseItem* elipse;
    QGraphicsTextItem* txt;
 
-   void setRoute(int timeNew);
-
+   void setRoute();
 
 private:
    QString id;
    QPointF* c;
    Line* line;
 
-   int time;
-   int routeTime;
+   unsigned time;
+   unsigned routeTime;
 
    unsigned currentStreet;
    unsigned nextStop;
 
    QPainterPath* path;
+   std::vector<unsigned> times;
+   bool dead;
 
 
 public slots:
