@@ -17,6 +17,7 @@ Line::Line(QString id,QGraphicsScene* scene)
     this->time = 0;
     this->scene = scene;
     this->vehicleNum = 1;
+    this->timetable = {};
 
 }
 
@@ -91,12 +92,16 @@ QPointF *Line::getCommonPoint(unsigned n1, unsigned n2)
 
 }
 
+void Line::addToTimeTable(std::vector<QString> times)
+{
+
+    timetable.push_back(times);
+}
+
 void Line::touch()
 {
 
-    time += 1;
-
-    if(time % 100 == 0 ){
+    if(time % 60 == 0 ){
         QString string = "Vehicle"  + QString::number(vehicleNum);
         this->vehicleNum += 1;
         Drawable draw;
@@ -114,6 +119,7 @@ void Line::touch()
         v->touch();
     }
 
+    time += 1;
 }
 
 void Line::pass()

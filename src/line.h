@@ -7,6 +7,8 @@
 #include <QGraphicsScene>
 
 class QPointF;
+#include <vector>
+
 class Street;
 class Vehicle;
 class Stop;
@@ -27,6 +29,7 @@ public:
     Stop* getStop(unsigned n);
     Street* getStreet(unsigned n);
     QPointF* getCommonPoint(unsigned n1,unsigned n2);
+    void addToTimeTable(std::vector<QString> times);
 
 public slots:
     void touch();
@@ -36,7 +39,7 @@ private:
     std::vector<Vehicle*> vehicle;
     std::vector<Street*> streets;
     std::vector<Stop*> stops;
-    std::vector<std::vector<unsigned>> timetable;
+    std::vector<std::vector<QString>> timetable;
     int time;
     QString id;
     QGraphicsScene* scene;

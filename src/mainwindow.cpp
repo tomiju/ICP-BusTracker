@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+
     mainTime = 0;
 
     connect(ui->ZoomIn, &QPushButton::clicked, this, &MainWindow::zoomIn);
@@ -30,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     QGraphicsScene* scene = new QGraphicsScene(ui->graphicsView);
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+
 
     QPointF* c1 = new QPointF(0,0);
     QPointF* c2 = new QPointF(100,0);
@@ -71,14 +73,21 @@ MainWindow::MainWindow(QWidget *parent)
     line->addStop(s3);
     line->addStop(s2);
 
+    std::vector<QString> v1 = {"00:00", "00:02", "00:03"};
+    std::vector<QString> v2 = {"00:02", "00:05", "00:07"};
+    std::vector<QString> v3 = {"00:04", "00:05", "00:06"};
+    std::vector<QString> v4 = {"00:05", "00:06", "00:08"};
+
+    line->addToTimeTable(v1);
+    line->addToTimeTable(v2);
+    line->addToTimeTable(v3);
+    line->addToTimeTable(v4);
 
     timer = new QTimer();
     connect(timer, &QTimer::timeout, line, &Line::touch);
     connect(timer, &QTimer::timeout, this, &MainWindow::updatemainTime);
-    timer->setInterval(50);
+    timer->setInterval(1000);
     timer->start();
-
-
 
     connect(ui->changeTimeButton,&QPushButton::clicked,this,&MainWindow::setTimer);
     connect(ui->stopPlayButton,&QPushButton::clicked,this,&MainWindow::stopPlay);
@@ -111,18 +120,17 @@ void MainWindow::restart()
 void MainWindow::setTimer()
 {
 
-    int t[5] = {50,30,20,15,10};
+    int t[9] = {1000,500,200,100,50,20,10,5,2};
 
     static int speed = 0;
     speed += 1;
 
-    if(speed > 4){
+    if(speed > 9){
         speed = 0;
     }
 
     this->timer->setInterval(t[speed]);
     ui->changeTimeButton->setText("Speed: " + QString::number(speed + 1) );
-
 }
 
 
@@ -135,15 +143,14 @@ void MainWindow::stopPlay()
     }
 }
 
+
 void MainWindow::updatemainTime()
 {
     mainTime += 1;
     QTime time;
     time.setHMS(0,0,0);
-    time = time.addSecs(mainTime/20);
+    time = time.addSecs(mainTime);
 
     ui->TimeLabel->setText(time.toString());
 }
-
-
 

@@ -28,6 +28,7 @@ void Drawable::drawStreet(Street* street, QGraphicsScene* scene)
     QGraphicsLineItem* line = scene->addLine(x1, y1, x2, y2);
     QPen pen;
     pen.setWidth(2);
+
     line->setPen(pen);
 
     QGraphicsTextItem* name = scene->addText(street->getId());
