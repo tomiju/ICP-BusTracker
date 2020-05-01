@@ -1,114 +1,96 @@
 #include "vehicle.h"
 
 #include "line.h"
+#include "stop.h"
 
 #include <QGraphicsEllipseItem>
 #include <QDebug>
 #include <QPoint>
+#include <QLineF>
+#include <QPainterPath>
 
 Vehicle::Vehicle(QString id, QPointF *c,Line* line)
 {
     this->id = id;
     this->c = new QPointF(c->x(),c->y());
-    this->start = new QPointF(c->x(),c->y());
-    this->destination = new QPointF;
     this->line = line;
-    this->pointN = 1;
+    this->currentStreet = 0;
+    this->nextStop = 0;
+
 }
+
 
 QPointF *Vehicle::getCoordinate()
 {
     return c;
 }
 
+
 QString Vehicle::getId()
 {
     return id;
 }
 
-void Vehicle::setRoute(int time, QPointF* destination)
+
+void Vehicle::setRoute(int timeNew)
 {
-    this->routeTime = time;
-    this->time = 0;
-    *this->start = *this->c;
-    *this->destination = *destination;
+    routeTime = timeNew;
+    time = 0;
+    nextStop += 1;
+    unsigned streetN = this->currentStreet;
 
+    auto stop = line->getStop(nextStop);
 
-    qDebug() << this->getId()<< "destination:" << *destination << this->routeTime;
+    if(stop == nullptr ){
+        auto scene = elipse->scene();
+        scene->removeItem(elipse);
+        scene->removeItem(txt);
+        delete elipse;
+        delete txt;
+        line->removeFirstVehicle();
+        delete this;
+        return;
+    }
+
+    path = new QPainterPath(*this->c);
+
+    while(1){
+        Street* str = line->getStreet(streetN);
+        if(stop->getStreet() == str){
+            break;
+        }
+
+        auto point = line->getCommonPoint(streetN,streetN + 1);
+
+        if(point == nullptr){
+            qDebug() << "no common point";
+            return;
+        }
+
+        path->lineTo(*point);
+        streetN += 1;
+    }
+
+    path->lineTo(*stop->getCoordinate());
+    currentStreet = streetN;
 }
 
-void Vehicle::pointNIncrease()
-{
-    this->pointN += 1;
-}
-
-void Vehicle::change(const QVariant x)
-{
-    QPoint p = x.toPoint();
-
-    this->elipse->setX(p.x());
-    this->elipse->setY(p.y());
-
-    this->elipse->update();
-
-    this->txt->setX(p.x() - 10);
-    this->txt->setY(p.y() + 15);
-
-    this->txt->update();
-
-}
-
-void Vehicle::update()
-{
-    this->elipse->update();
-    this->txt->update();
-}
 
 void Vehicle::touch()
 {
 
     if(this->time >= this->routeTime){
-        qDebug() <<id <<"had point point nr: " << pointN;
-
-        this->pointNIncrease();
-
-        qDebug() <<id <<"asked for point nr: " << pointN;
-        QPointF* d = this->line->getPoint(pointN);
-
-        if(d == nullptr){
-            this->elipse->scene()->removeItem(this->txt);
-            this->elipse->scene()->removeItem(this->elipse);
-            delete this->elipse;
-            delete this->txt;
-            this->line->removeFirstVehicle();
-            delete this;
-
-        }else{
-
-            setRoute(100,d);
-        }
-
+        setRoute(100);
+        return;
     }
 
-
-
-
     this->time += 1;
-
-    QPointF* start =  this->start;
-    QPointF* end =  this->destination;
-
-    //qDebug() <<"start: " << *start<<"end: " << *end;
-
-    double deltaX = end->x() - start->x();
-    double deltaY = end->y() - start->y();
-
-
     double progress = static_cast< double >( this->time) / this->routeTime;
-    //qDebug() << progress;
 
-    double newX = start->x() + deltaX*progress;
-    double newY = start->y() + deltaY*progress;
+    QPointF newPoint = path->pointAtPercent(progress);
+
+    double newX = newPoint.x();
+    double newY = newPoint.y();
 
     this->c->setX(newX);
     this->c->setY(newY);

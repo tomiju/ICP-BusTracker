@@ -25,10 +25,12 @@ public:
 public slots:
     void setTimer();
     void stopPlay();
+    void updatemainTime();
 
 private:
     Ui::MainWindow *ui;
     QTimer* timer;
+    unsigned mainTime;
 
 };
 #endif // MAINWINDOW_H

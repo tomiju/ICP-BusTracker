@@ -44,7 +44,19 @@ void Drawable::drawStop(Stop* stop, QGraphicsScene* scene)
     double x = coordinate->x();
     double y = coordinate->y();
 
-    scene->addEllipse(x - 10, y - 10 , 20, 20);
+    auto ellipse = scene->addEllipse(x - 10, y - 10 , 20, 20);
+
+    QBrush brush;
+    QColor color;
+    color.setRgb(121, 236, 121);
+    brush.setColor(color);
+    brush.setStyle(Qt::BrushStyle::SolidPattern);
+
+    QPen pen;
+    pen.setWidth(2);
+
+    ellipse->setBrush(brush);
+    ellipse->setPen(pen);
 
     QGraphicsTextItem* name = scene->addText(stop->getId());
     name->setX(x);

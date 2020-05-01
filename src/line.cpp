@@ -1,6 +1,7 @@
 #include "line.h"
 
 #include "street.h"
+#include "stop.h"
 #include "vehicle.h"
 #include "drawable.h"
 
@@ -8,6 +9,7 @@
 #include <QPointF>
 #include <QGraphicsScene>
 #include <QDebug>
+
 
 Line::Line(QString id,QGraphicsScene* scene)
 {
@@ -20,66 +22,89 @@ Line::Line(QString id,QGraphicsScene* scene)
 
 void Line::addStreet(Street* str)
 {
-    QPointF* p = points.back();
-    QPointF* strp1 = str->getCoordinates()[0];
-    QPointF* strp2 = str->getCoordinates()[1];
-
-    if(*p == *strp1){
-        points.push_back(strp2);
-        qDebug() <<"Next point:"<< *strp2;
-    }else if(*p == *strp2){
-        points.push_back(strp1);
-        qDebug() <<"Next point:"<< *strp1;
-    }else{
-        return;
-    }
 
     this->streets.push_back(str);
 
 }
 
-void Line::setStartPoint(QPointF *p)
-{
-    points.push_back(p);
-    qDebug() <<"Start point: "<< *p;
-    qDebug() <<"Saved value: "<< *points.at(0);
 
+
+void Line::addStop(Stop *stop)
+{
+    stops.push_back(stop);
 }
 
-QPointF *Line::getPoint( unsigned p)
-{
 
-    if(p >= points.size() ){
-        return nullptr;
-    }
-
-
-    return points.at(static_cast<unsigned>(p));
-}
 
 void Line::removeFirstVehicle()
 {
     this->vehicle.erase(this->vehicle.begin());
 }
 
+Stop* Line::getStop(unsigned n)
+{
+    if(stops.size() > n ){
+        return stops.at(n);
+    }else{
+        return nullptr;
+    }
+}
+
+Street *Line::getStreet(unsigned n)
+{
+    if(streets.size() > n ){
+        return streets.at(n);
+    }else{
+        return nullptr;
+    }
+}
+
+QPointF *Line::getCommonPoint(unsigned n1, unsigned n2)
+{
+    if(streets.size() < n1 || streets.size() < n2 ){
+        qDebug() << "Number of streets too high";
+        return nullptr;
+    }
+
+    Street* str1 = streets.at(n1);
+    Street* str2 = streets.at(n2);
+
+    if(*str1->getCoordinates()[0] == *str2->getCoordinates()[0]){
+        return str1->getCoordinates()[0];
+    }
+
+    if(*str1->getCoordinates()[1] == *str2->getCoordinates()[0]){
+        return str1->getCoordinates()[1];
+    }
+
+    if(*str1->getCoordinates()[1] == *str2->getCoordinates()[1]){
+        return str1->getCoordinates()[1];
+    }
+
+    if(*str1->getCoordinates()[0] == *str2->getCoordinates()[1]){
+        return str1->getCoordinates()[0];
+    }
+
+
+
+    return nullptr;
+
+}
+
 void Line::touch()
 {
 
     time += 1;
-    //qDebug() <<"Saved value: "<< *this->points.at(0)<< *points.at(1) << *points.at(2) << *points.at(3) <<this->id ;
-
-
 
     if(time % 100 == 0 ){
         QString string = "Vehicle"  + QString::number(vehicleNum);
         this->vehicleNum += 1;
         Drawable draw;
 
-
-        Vehicle* v = new Vehicle(string,this->points.at(0),this);
+        auto startStop = this->stops.at(0);
+        Vehicle* v = new Vehicle(string,startStop->getCoordinate(),this);
         draw.drawVehicle(v, this->scene);
-        //qDebug() << "Set route: " << *this->points.at(1);
-        v->setRoute(100,this->points.at(1));
+        v->setRoute(200);
         this->vehicle.push_back(v);
     }
 
@@ -88,7 +113,6 @@ void Line::touch()
 
         v->touch();
     }
-
 
 }
 

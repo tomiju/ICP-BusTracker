@@ -10,6 +10,9 @@ class QGraphicsEllipseItem;
 class QGraphicsTextItem;
 class QVariantAnimation;
 class Line;
+class Street;
+class Stop;
+class QPainterPath;
 
 class Vehicle : public QObject
 {
@@ -20,34 +23,30 @@ public:
 
    QString getId();
 
-
    Vehicle(QString id, QPointF* c,Line* line);
 
    QGraphicsEllipseItem* elipse;
    QGraphicsTextItem* txt;
 
-   void setRoute(int time, QPointF* destination);
-
+   void setRoute(int timeNew);
 
 
 private:
    QString id;
    QPointF* c;
-   int time;
-   int routeTime;
-   QPointF* start;
-   QPointF* destination;
-   QVariantAnimation* a;
-   unsigned pointN;
    Line* line;
 
-   void pointNIncrease();
+   int time;
+   int routeTime;
+
+   unsigned currentStreet;
+   unsigned nextStop;
+
+   QPainterPath* path;
+
 
 public slots:
 
-
-   void change( QVariant x);
-   void update();
    void touch();
 
 };

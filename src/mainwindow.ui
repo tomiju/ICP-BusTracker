@@ -46,7 +46,7 @@
       <item>
        <widget class="QPushButton" name="changeTimeButton">
         <property name="text">
-         <string>Change Time</string>
+         <string>Speed: 1</string>
         </property>
        </widget>
       </item>
@@ -58,9 +58,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="touchButton">
+       <widget class="QLabel" name="TimeLabel">
         <property name="text">
-         <string>Touch</string>
+         <string>TextLabel</string>
         </property>
        </widget>
       </item>
