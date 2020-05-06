@@ -24,21 +24,13 @@ Line::Line(QString id)
 
 void Line::addStreet(Street* str)
 {
-
     this->streets.push_back(str);
-
 }
 
 
 void Line::addStop(Stop *stop)
 {
     stops.push_back(stop);
-}
-
-
-void Line::removeFirstVehicle()
-{
-    this->vehicle.erase(this->vehicle.begin());
 }
 
 
@@ -93,14 +85,24 @@ QPointF *Line::getCommonPoint(unsigned n1, unsigned n2)
 
 void Line::addToTimeTable(std::vector<QString> times)
 {
-    vector<unsigned> v = {};
+    vector<unsigned> vec = {};
 
     for(auto t : times){
         QTime time = QTime::fromString(t, "hh:mm");
-        v.push_back(60*time.minute()+3600*time.hour());
+        vec.push_back(60*time.minute()+3600*time.hour());
     }
 
-    timetable.push_back(v);
+    timetable.push_back(vec);
+    this->vehicleNum += 1;
+    QString string = "Vehicle"  + QString::number(vehicleNum);
+
+    auto startStop = this->stops.at(0);
+    Vehicle* v = new Vehicle(string,startStop->getCoordinate(),this, vec);
+    draw->drawVehicle(v);
+    v->setRoute();
+    v->kill();
+    this->vehicle.push_back(v);
+
 }
 
 std::vector<Stop *> Line::getStops()
@@ -113,19 +115,21 @@ std::vector<Street *> Line::getAllStreets()
     return streets;
 }
 
+void Line::reset()
+{
+    this->time = 0;
+    for(auto v : vehicle){
+        v->reset();
+        v->setRoute();
+    }
+}
+
 
 void Line::touch()
 {
-    for(auto timeTablePart : timetable){
-        if(time == timeTablePart.at(0) ){
-            this->vehicleNum += 1;
-            QString string = "Vehicle"  + QString::number(vehicleNum);
-
-            auto startStop = this->stops.at(0);
-            Vehicle* v = new Vehicle(string,startStop->getCoordinate(),this, timeTablePart);
-            draw->drawVehicle(v);
-            v->setRoute();
-            this->vehicle.push_back(v);
+    for(unsigned i = 0; i < timetable.size(); i++){
+        if(time == timetable.at(i).at(0) ){
+            vehicle.at(i)->activate();
         }
     }
 
@@ -136,4 +140,6 @@ void Line::touch()
 
     time += 1;
 }
+
+
 

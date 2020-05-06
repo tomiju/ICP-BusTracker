@@ -2,10 +2,11 @@
 #define VEHICLEVIEW_H
 
 #include <QGraphicsEllipseItem>
-
+#include <QGraphicsTextItem>
 
 class Vehicle;
 class Drawable;
+
 
 class VehicleView : public QGraphicsEllipseItem
 {
@@ -18,6 +19,7 @@ protected:
 private:
     Drawable* drawable;
     Vehicle* vehicle;
+    QGraphicsTextItem txt;
 };
 
 #endif // VEHICLEVIEW_H

@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsTextItem>
 
 
 VehicleView::VehicleView(Drawable* d,Vehicle* v,qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent) :
@@ -12,6 +13,7 @@ VehicleView::VehicleView(Drawable* d,Vehicle* v,qreal x, qreal y, qreal width, q
 {
     this->drawable = d;
     this->vehicle = v;
+
 }
 
 void VehicleView::mousePressEvent(QGraphicsSceneMouseEvent *event)

@@ -44,7 +44,6 @@ void Vehicle::setRoute()
     auto stop = line->getStop(nextStop);
 
     if(stop == nullptr ){
-        auto scene = elipse->scene();
         txt->hide();
         elipse->hide();
         dead = true;
@@ -96,9 +95,44 @@ std::vector<unsigned> Vehicle::getStopTimes()
     return times;
 }
 
+void Vehicle::kill()
+{
+    txt->hide();
+    elipse->hide();
+    dead = true;
+}
+
+void Vehicle::activate()
+{
+    txt->show();
+    elipse->show();
+    dead = false;
+}
+
 bool Vehicle::isDead()
 {
     return dead;
+}
+
+void Vehicle::reset()
+{
+
+    this->kill();
+    this->currentStreet = 0;
+    this->nextStop = 0;
+    auto newPoint = line->getStop(0)->getCoordinate();
+
+    double newX = newPoint->x();
+    double newY = newPoint->y();
+
+    this->c->setX(newX);
+    this->c->setY(newY);
+
+    this->elipse->setX(newX - 5);
+    this->elipse->setY(newY - 5);
+
+    this->txt->setX(newX);
+    this->txt->setY(newY + 15);
 }
 
 

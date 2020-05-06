@@ -38,7 +38,13 @@ public:
 
    std::vector<unsigned> getStopTimes();
 
+   void kill();
+
+   void activate();
+
    bool isDead();
+
+   void reset();
 
 private:
    QString id;

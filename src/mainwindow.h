@@ -6,6 +6,7 @@
 
 class Vehicle;
 class QTimer;
+class Line;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,11 +30,14 @@ public slots:
     void setTimer();
     void stopPlay();
     void updatemainTime();
+    void resetTime();
+    void setTime();
 
 private:
     Ui::MainWindow *ui;
     QTimer* timer;
     unsigned mainTime;
+    Line* mainLine;
 
 };
 #endif // MAINWINDOW_H

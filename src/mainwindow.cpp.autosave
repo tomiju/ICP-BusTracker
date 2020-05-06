@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->changeTimeButton,&QPushButton::clicked,this,&MainWindow::setTimer);
     connect(ui->stopPlayButton,&QPushButton::clicked,this,&MainWindow::stopPlay);
     connect(ui->resetButton,&QPushButton::clicked,this,&MainWindow::resetTime);
-    connect(ui->lineEdit, &QLineEdit::textEdited,this,&MainWindow::setTime);
+    connect(ui->lineEdit, &QLineEdit::textEdited    ,this,&MainWindow::setTime);
 
     QGraphicsScene* scene = new QGraphicsScene(ui->graphicsView);
     ui->graphicsView->setScene(scene);

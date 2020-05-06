@@ -58,6 +58,16 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="resetButton">
+        <property name="text">
+         <string>Reset</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit"/>
+      </item>
+      <item>
        <widget class="QLabel" name="TimeLabel">
         <property name="text">
          <string>TextLabel</string>

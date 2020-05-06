@@ -22,17 +22,22 @@ public:
     Line(QString id);
 
     void addStreet(Street* str);
+
     void addStop(Stop* stop);
 
-    QPointF* getPoint(unsigned p);
-    void removeFirstVehicle();
     Stop* getStop(unsigned n);
+
     Street* getStreet(unsigned n);
+
     QPointF* getCommonPoint(unsigned n1,unsigned n2);
+
     void addToTimeTable(std::vector<QString> times);
+
     std::vector<Stop *> getStops();
 
     std::vector<Street*> getAllStreets();
+
+    void reset();
 
     Drawable* draw;
 
