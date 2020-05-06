@@ -39,3 +39,14 @@ bool Street::operator==(const Street& street) const {
          street.stops == stops;
 
 }
+
+void Street::setStreetView(StreetView *v)
+{
+    this->view = v;
+}
+
+
+StreetView * Street::getStreetView()
+{
+    return view;
+}

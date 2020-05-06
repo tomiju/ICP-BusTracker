@@ -53,17 +53,17 @@ MainWindow::MainWindow(QWidget *parent)
     str3->addStop(s2);
     str2->addStop(s3);
 
-    Drawable draw =  Drawable();
+    Drawable* draw = new Drawable(scene,this);
 
-    draw.drawStreet(str1, scene);
-    draw.drawStreet(str2, scene);
-    draw.drawStreet(str3, scene);
+    draw->drawStreet(str1);
+    draw->drawStreet(str2);
+    draw->drawStreet(str3);
 
-    draw.drawStop(s1,scene);
-    draw.drawStop(s2,scene);
-    draw.drawStop(s3,scene);
+    draw->drawStop(s1);
+    draw->drawStop(s2);
+    draw->drawStop(s3);
 
-    Line* line = new Line("Line", scene );
+    Line* line = new Line("Line");
 
     line->addStreet(str1);
     line->addStreet(str2);
@@ -72,6 +72,7 @@ MainWindow::MainWindow(QWidget *parent)
     line->addStop(s1);
     line->addStop(s3);
     line->addStop(s2);
+    line->draw = draw;
 
     std::vector<QString> v1 = {"00:00", "00:02", "00:03"};
     std::vector<QString> v2 = {"00:02", "00:05", "00:07"};
@@ -83,11 +84,17 @@ MainWindow::MainWindow(QWidget *parent)
     line->addToTimeTable(v3);
     line->addToTimeTable(v4);
 
+
+
     timer = new QTimer();
     connect(timer, &QTimer::timeout, line, &Line::touch);
     connect(timer, &QTimer::timeout, this, &MainWindow::updatemainTime);
+    connect(timer, &QTimer::timeout, draw, &Drawable::update);
+
     timer->setInterval(1000);
     timer->start();
+
+
 
 }
 
@@ -112,6 +119,40 @@ void MainWindow::zoomOut()
 void MainWindow::restart()
 {
     ui->graphicsView->scale(0.8, 0.8);
+}
+
+void MainWindow::showVehicleRoute(Vehicle *vehicle)
+{
+    ui->listWidget->clear();
+
+    if(vehicle->isDead()){
+        return;
+    }
+
+    auto stops = vehicle->getStops();
+    auto times = vehicle->getStopTimes();
+
+    ui->listWidget->addItem(vehicle->getId());
+
+    for(unsigned i = 0; i < stops.size(); i++){
+
+        auto t =  times.at(i);
+        QTime time;
+        time.setHMS(0,0,0);
+        time = time.addSecs(t);
+
+        QString str = time.toString() + "\t" + stops.at(i)->getId();
+
+        ui->listWidget->addItem(str);
+
+    }
+
+    int nextStop = 1 + static_cast<int>(vehicle->getNextStopN());
+
+    if(nextStop < ui->listWidget->count()){
+        ui->listWidget->item(nextStop)->setBackgroundColor(Qt::red);
+    }
+
 }
 
 
@@ -153,4 +194,6 @@ void MainWindow::updatemainTime()
 
     ui->TimeLabel->setText(time.toString());
 }
+
+
 

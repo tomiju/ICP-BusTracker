@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+
+class Vehicle;
 class QTimer;
 
 QT_BEGIN_NAMESPACE
@@ -21,6 +23,7 @@ public:
 
     void zoomOut();
     void restart();
+    void showVehicleRoute(Vehicle *vehicle);
 
 public slots:
     void setTimer();

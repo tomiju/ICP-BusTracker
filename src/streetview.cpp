@@ -1,27 +1,31 @@
 #include "streetview.h"
 
-#include <QGraphicsLineItem>
+#include <QPen>
 #include <QGraphicsTextItem>
+#include <QGraphicsLineItem>
 
 
-StreetView::StreetView(QGraphicsLineItem* line, QGraphicsTextItem* name)
+StreetView::StreetView(qreal x1, qreal y1, qreal x2, qreal y2, QGraphicsItem * parent):
+    QGraphicsLineItem(x1,y1,x2,y2,parent)
 {
-    this->line = line;
-    this->name = name;
+    QPen pen;
+    pen.setWidth(2);
+    setPen(pen);
+
 }
 
-QGraphicsTextItem *StreetView::getName()
+void StreetView::highlight()
 {
-    return this->name;
+
+    QPen newPen = pen();
+    newPen.setColor(Qt::red);
+    setPen(newPen);
+
 }
 
-QGraphicsLineItem *StreetView::getLine()
+void StreetView::unhighlight()
 {
-    return this->line;
+    QPen newPen = pen();
+    newPen.setColor(Qt::black);
+    setPen(newPen);
 }
-
-
-
-
-
-

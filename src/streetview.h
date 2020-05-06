@@ -4,20 +4,19 @@
 class QGraphicsLineItem;
 class QGraphicsTextItem;
 
+#include <QGraphicsLineItem>
 
-class StreetView
+class StreetView : public QGraphicsLineItem
 {
 public:
-    StreetView(QGraphicsLineItem* line, QGraphicsTextItem* name);
-    QGraphicsTextItem* getName();
-    QGraphicsLineItem* getLine();
+
+    StreetView(qreal x1, qreal y1, qreal x2, qreal y2, QGraphicsItem * parent = nullptr);
+
+    void highlight();
+    void unhighlight();
 
 
 
-
-private:
-    QGraphicsLineItem* line;
-    QGraphicsTextItem* name;
 };
 
 #endif // STREETVIEW_H

@@ -12,11 +12,10 @@
 #include <QTime>
 
 
-Line::Line(QString id,QGraphicsScene* scene)
+Line::Line(QString id)
 {
     this->id = id;
     this->time = 0;
-    this->scene = scene;
     this->vehicleNum = 0;
     this->timetable = {};
 
@@ -104,6 +103,16 @@ void Line::addToTimeTable(std::vector<QString> times)
     timetable.push_back(v);
 }
 
+std::vector<Stop *> Line::getStops()
+{
+    return stops;
+}
+
+std::vector<Street *> Line::getAllStreets()
+{
+    return streets;
+}
+
 
 void Line::touch()
 {
@@ -112,11 +121,9 @@ void Line::touch()
             this->vehicleNum += 1;
             QString string = "Vehicle"  + QString::number(vehicleNum);
 
-            Drawable draw;
-
             auto startStop = this->stops.at(0);
             Vehicle* v = new Vehicle(string,startStop->getCoordinate(),this, timeTablePart);
-            draw.drawVehicle(v, this->scene);
+            draw->drawVehicle(v);
             v->setRoute();
             this->vehicle.push_back(v);
         }
@@ -130,8 +137,3 @@ void Line::touch()
     time += 1;
 }
 
-
-void Line::pass()
-{
-    return;
-}

@@ -13,6 +13,7 @@ class Line;
 class Street;
 class Stop;
 class QPainterPath;
+class VehicleView;
 
 class Vehicle : public QObject
 {
@@ -25,10 +26,19 @@ public:
 
    Vehicle(QString id, QPointF* c,Line* line,std::vector<unsigned> t);
 
-   QGraphicsEllipseItem* elipse;
+   VehicleView* elipse;
    QGraphicsTextItem* txt;
 
    void setRoute();
+
+   Line* getLine();
+
+   std::vector<Stop*> getStops();
+   unsigned getNextStopN();
+
+   std::vector<unsigned> getStopTimes();
+
+   bool isDead();
 
 private:
    QString id;

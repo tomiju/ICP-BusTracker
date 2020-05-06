@@ -2,6 +2,10 @@
 #include "street.h"
 #include "stop.h"
 #include "vehicle.h"
+#include "vehicleview.h"
+#include "mainwindow.h"
+#include "line.h"
+#include "streetview.h"
 
 #include <QGraphicsScene>
 #include <vector>
@@ -10,12 +14,15 @@
 #include <QPainter>
 #include<QGraphicsLineItem>
 
-Drawable::Drawable()
+Drawable::Drawable(QGraphicsScene* s,MainWindow* mw)
 {
-
+    scene = s;
+    mainWindow = mw;
+    this->vehicle = nullptr;
+    this->line = nullptr;
 }
 
-void Drawable::drawStreet(Street* street, QGraphicsScene* scene)
+void Drawable::drawStreet(Street* street)
 {
 
     vector<QPointF*> coordinates =  street->getCoordinates();
@@ -25,11 +32,10 @@ void Drawable::drawStreet(Street* street, QGraphicsScene* scene)
     double x2 = coordinates.at(1)->x();
     double y2 = coordinates.at(1)->y();
 
-    QGraphicsLineItem* line = scene->addLine(x1, y1, x2, y2);
-    QPen pen;
-    pen.setWidth(2);
+    auto* view = new StreetView(x1, y1, x2, y2);
+    this->scene->addItem(view);
 
-    line->setPen(pen);
+    street->setStreetView(view);
 
     QGraphicsTextItem* name = scene->addText(street->getId());
     name->setX((x1+x2)/2);
@@ -37,7 +43,7 @@ void Drawable::drawStreet(Street* street, QGraphicsScene* scene)
 
 }
 
-void Drawable::drawStop(Stop* stop, QGraphicsScene* scene)
+void Drawable::drawStop(Stop* stop)
 {
 
     QPointF* coordinate = stop->getCoordinate();
@@ -64,23 +70,20 @@ void Drawable::drawStop(Stop* stop, QGraphicsScene* scene)
     name->setY(y);
 }
 
-void Drawable::drawVehicle(Vehicle *vehicle, QGraphicsScene *scene)
+void Drawable::drawVehicle(Vehicle *vehicle)
 {
 
-
-
     QPointF* p = vehicle->getCoordinate();
+    auto e = new VehicleView(this,vehicle,0, 0, 10, 10);
 
-    vehicle->elipse = scene->addEllipse(0, 0, 10, 10);
-    vehicle->elipse->setFlag(QGraphicsItem::ItemIsSelectable);
+    vehicle->elipse = e;
+    scene->addItem(e);
 
     vehicle->elipse->setX(p->x() - 5);
     vehicle->elipse->setY(p->y() - 5);
 
     QBrush brush;
-    QColor color;
-    color.setRgb(255, 128, 128);
-    brush.setColor(color);
+    brush.setColor(Qt::blue);
     brush.setStyle(Qt::BrushStyle::SolidPattern);
 
     QPen pen;
@@ -98,6 +101,49 @@ void Drawable::drawVehicle(Vehicle *vehicle, QGraphicsScene *scene)
     vehicle->txt = name;
 
 
+}
+
+void Drawable::showVehicleRoute(Vehicle *vehicle)
+{
+    QBrush brush;
+    brush.setColor(Qt::blue);
+    brush.setStyle(Qt::BrushStyle::SolidPattern);
+
+    if(this->vehicle){
+        this->vehicle->elipse->setBrush(brush);
+        auto line = this->vehicle->getLine();
+
+        auto streets = line->getAllStreets();
+
+        for(auto str : streets){
+            str->getStreetView()->unhighlight();
+        }
+
+    }
+
+    this->vehicle = vehicle;
+
+    brush.setColor(Qt::red);
+    this->vehicle->elipse->setBrush(brush);
+
+    auto line = this->vehicle->getLine();
+
+    auto streets = line->getAllStreets();
+
+    for(auto str : streets){
+        str->getStreetView()->highlight();
+    }
+
+
+    mainWindow->showVehicleRoute(vehicle);
+}
+
+
+void Drawable::update()
+{
+    if(this->vehicle){
+        mainWindow->showVehicleRoute(vehicle);
+    }
 }
 
 

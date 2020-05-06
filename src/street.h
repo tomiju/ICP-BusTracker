@@ -7,7 +7,7 @@
 #include <QPointF>
 
 class Stop;
-
+class StreetView;
 
 using namespace std;
 
@@ -26,10 +26,16 @@ public:
 
         bool operator==(const Street& Street) const;
 
+        void setStreetView(StreetView* v);
+
+        StreetView* getStreetView();
+
     private:
         QString id;
         vector<QPointF*> coordinates;
         vector<Stop*> stops;
+        StreetView* view;
+
 };
 
 #endif // STREET_H

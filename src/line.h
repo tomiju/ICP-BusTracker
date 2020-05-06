@@ -12,16 +12,16 @@ class QPointF;
 class Street;
 class Vehicle;
 class Stop;
+class Drawable;
 
 class Line : public QObject
 {
     Q_OBJECT
 
 public:
-    Line(QString id,QGraphicsScene* scene);
+    Line(QString id);
 
     void addStreet(Street* str);
-    void setStartPoint(QPointF* p);
     void addStop(Stop* stop);
 
     QPointF* getPoint(unsigned p);
@@ -30,10 +30,14 @@ public:
     Street* getStreet(unsigned n);
     QPointF* getCommonPoint(unsigned n1,unsigned n2);
     void addToTimeTable(std::vector<QString> times);
+    std::vector<Stop *> getStops();
+
+    std::vector<Street*> getAllStreets();
+
+    Drawable* draw;
 
 public slots:
     void touch();
-    void pass();
 
 private:
     std::vector<Vehicle*> vehicle;
@@ -42,7 +46,6 @@ private:
     std::vector<std::vector<unsigned>> timetable;
     unsigned time;
     QString id;
-    QGraphicsScene* scene;
     unsigned vehicleNum;
 
 };

@@ -1,9 +1,9 @@
 #include "vehicle.h"
-
+#include "mainwindow.h"
 #include "line.h"
 #include "stop.h"
+#include "vehicleview.h"
 
-#include <QGraphicsEllipseItem>
 #include <QDebug>
 #include <QPoint>
 #include <QLineF>
@@ -17,7 +17,7 @@ Vehicle::Vehicle(QString id, QPointF *c,Line* line, std::vector<unsigned> t)
     this->currentStreet = 0;
     this->nextStop = 0;
     this->times = t;
-    dead = false;
+    this->dead = false;
 
 }
 
@@ -44,14 +44,9 @@ void Vehicle::setRoute()
     auto stop = line->getStop(nextStop);
 
     if(stop == nullptr ){
-
         auto scene = elipse->scene();
-        scene->removeItem(elipse);
-        scene->removeItem(txt);
-        delete elipse;
-        delete txt;
-        //line->removeFirstVehicle();
-        //delete this;
+        txt->hide();
+        elipse->hide();
         dead = true;
         return;
     }
@@ -79,6 +74,31 @@ void Vehicle::setRoute()
 
     path->lineTo(*stop->getCoordinate());
     currentStreet = streetN;
+}
+
+Line *Vehicle::getLine()
+{
+    return line;
+}
+
+std::vector<Stop *> Vehicle::getStops()
+{
+    return line->getStops();
+}
+
+unsigned Vehicle::getNextStopN()
+{
+    return nextStop;
+}
+
+std::vector<unsigned> Vehicle::getStopTimes()
+{
+    return times;
+}
+
+bool Vehicle::isDead()
+{
+    return dead;
 }
 
 
