@@ -6,6 +6,7 @@
 #include "drawable.h"
 #include "vehicle.h"
 #include "line.h"
+#include "jsonfactory.h"
 
 #include <cmath>
 #include <iostream>
@@ -17,6 +18,7 @@
 #include <QPoint>
 #include <QTimer>
 #include <QTime>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -42,65 +44,24 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
 
-    QPointF* c1 = new QPointF(0,0);
-    QPointF* c2 = new QPointF(100,0);
-    QPointF* c3 = new QPointF(200,100);
-    QPointF* c4 = new QPointF(200,200);
-    QPointF* c5 = new QPointF(20,0);
-    QPointF* c6 = new QPointF(200,180);
-    QPointF* c7 = new QPointF(180,80);
-
-    Street* str1 = new Street("str1",c1,c2);
-    Street* str2 = new Street("str2",c2,c3);
-    Street* str3 = new Street("str3",c3,c4);
-
-    Stop* s1 = new Stop("s1",c5);
-    Stop* s2 = new Stop("s2",c6);
-    Stop* s3 = new Stop("s3",c7);
-
-    str1->addStop(s1);
-    str3->addStop(s2);
-    str2->addStop(s3);
-
     Drawable* draw = new Drawable(scene,this);
     this->drawable = draw;
 
+     QString name = QFileDialog::getOpenFileName(this,
+            tr("Open map file"), "",
+            tr("Json files (*.json)"));
 
-    draw->drawStreet(str1);
-    draw->drawStreet(str2);
-    draw->drawStreet(str3);
-
-    draw->drawStop(s1);
-    draw->drawStop(s2);
-    draw->drawStop(s3);
+    qDebug() << "name: " << name;
 
 
+    JsonFactory* factory = new JsonFactory(name,draw);
 
-    Line* line = new Line("Line");
+    auto stops = factory->getStops();
 
-    line->addStreet(str1);
-    line->addStreet(str2);
-    line->addStreet(str3);
-
-    line->addStop(s1);
-    line->addStop(s3);
-    line->addStop(s2);
-    line->draw = draw;
-
-    std::vector<QString> v1 = {"00:00", "00:02", "00:03"};
-    std::vector<QString> v2 = {"00:02", "00:05", "00:07"};
-    std::vector<QString> v3 = {"00:04", "00:05", "00:06"};
-    std::vector<QString> v4 = {"00:05", "00:06", "00:08"};
-
-    line->addToTimeTable(v1);
-    line->addToTimeTable(v2);
-    line->addToTimeTable(v3);
-    line->addToTimeTable(v4);
-
-    this->mainLine = line;
+    this->mainLine = factory->getLines()[0];
 
     timer = new QTimer();
-    connect(timer, &QTimer::timeout, line, &Line::touch);
+    connect(timer, &QTimer::timeout, factory->getLines()[0], &Line::touch);
     connect(timer, &QTimer::timeout, this, &MainWindow::updatemainTime);
     connect(timer, &QTimer::timeout, draw, &Drawable::update);
 

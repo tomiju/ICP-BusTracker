@@ -124,6 +124,11 @@ void Line::reset()
     }
 }
 
+void Line::setDrawable(Drawable *d)
+{
+    draw = d;
+}
+
 
 void Line::touch()
 {

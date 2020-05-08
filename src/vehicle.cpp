@@ -73,9 +73,6 @@ void Vehicle::setRoute()
     }
 
     path->lineTo(*stop->getCoordinate());
-
-
-    qDebug() << *path << path->elementAt(0) <<path->elementAt(1);
 }
 
 Line *Vehicle::getLine()

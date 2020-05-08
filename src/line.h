@@ -39,12 +39,15 @@ public:
 
     void reset();
 
-    Drawable* draw;
+    void setDrawable(Drawable* d);
+
+
 
 public slots:
     void touch();
 
 private:
+    Drawable* draw;
     std::vector<Vehicle*> vehicle;
     std::vector<Street*> streets;
     std::vector<Stop*> stops;

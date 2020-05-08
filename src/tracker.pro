@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     drawable.cpp \
+    jsonfactory.cpp \
     line.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
 
 HEADERS += \
     drawable.h \
+    jsonfactory.h \
     line.h \
     mainwindow.h \
     stop.h \
