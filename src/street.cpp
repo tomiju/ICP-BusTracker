@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <QPointF>
+#include <QGraphicsLineItem>
 
 #include "stop.h"
 
@@ -26,6 +27,7 @@ Street::Street(QString id, QPointF* c1, QPointF* c2){
     this->id = id;
     coordinates.push_back(c1);
     coordinates.push_back(c2);
+    congestionDegree = 1;
 }
 
 void Street::addStop(Stop* stop){
@@ -50,3 +52,19 @@ StreetView * Street::getStreetView()
 {
     return view;
 }
+
+qreal Street::getCongestionDegree()
+{
+    return congestionDegree;
+}
+
+bool Street::contains(QPointF *point)
+{
+    return QGraphicsLineItem(coordinates.at(0)->x(),coordinates.at(0)->y(),coordinates.at(1)->x(),coordinates.at(1)->y()).contains(*point);
+}
+
+void Street::setCongestionDegree(qreal d)
+{
+    congestionDegree = d;
+}
+

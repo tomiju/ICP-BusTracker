@@ -34,9 +34,14 @@ public:
    Line* getLine();
 
    std::vector<Stop*> getStops();
+
    unsigned getNextStopN();
 
+   Street* getCurrentStreet();
+
    std::vector<unsigned> getStopTimes();
+
+   qreal getDelay();
 
    void kill();
 
@@ -51,16 +56,17 @@ private:
    QPointF* c;
    Line* line;
 
-   unsigned time;
+   bool dead;
+
+   qreal time;
    unsigned routeTime;
+   qreal delay;
 
    unsigned currentStreet;
    unsigned nextStop;
 
    QPainterPath* path;
    std::vector<unsigned> times;
-   bool dead;
-
 
 public slots:
 

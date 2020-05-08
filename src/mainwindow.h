@@ -5,8 +5,10 @@
 
 
 class Vehicle;
+class Street;
 class QTimer;
 class Line;
+class Drawable;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,6 +27,8 @@ public:
     void zoomOut();
     void restart();
     void showVehicleRoute(Vehicle *vehicle);
+    void showStreet(Street *street);
+    void setCongestionDegree();
 
 public slots:
     void setTimer();
@@ -38,6 +42,7 @@ private:
     QTimer* timer;
     unsigned mainTime;
     Line* mainLine;
+    Drawable* drawable;
 
 };
 #endif // MAINWINDOW_H

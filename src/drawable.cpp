@@ -20,6 +20,7 @@ Drawable::Drawable(QGraphicsScene* s,MainWindow* mw)
     mainWindow = mw;
     this->vehicle = nullptr;
     this->line = nullptr;
+    this->street = nullptr;
 }
 
 void Drawable::drawStreet(Street* street)
@@ -32,7 +33,7 @@ void Drawable::drawStreet(Street* street)
     double x2 = coordinates.at(1)->x();
     double y2 = coordinates.at(1)->y();
 
-    auto* view = new StreetView(x1, y1, x2, y2);
+    auto* view = new StreetView(this,street,x1, y1, x2, y2);
     this->scene->addItem(view);
 
     street->setStreetView(view);
@@ -78,6 +79,7 @@ void Drawable::drawVehicle(Vehicle *vehicle)
 
     vehicle->elipse = e;
     scene->addItem(e);
+    e->setZValue(2);
 
     vehicle->elipse->setX(p->x() - 5);
     vehicle->elipse->setY(p->y() - 5);
@@ -105,9 +107,15 @@ void Drawable::drawVehicle(Vehicle *vehicle)
 
 void Drawable::showVehicleRoute(Vehicle *vehicle)
 {
+
+    this->street = nullptr;
     QBrush brush;
     brush.setColor(Qt::blue);
     brush.setStyle(Qt::BrushStyle::SolidPattern);
+
+    if(this->street){
+        this->street->getStreetView()->unhighlight();
+    }
 
     if(this->vehicle){
         this->vehicle->elipse->setBrush(brush);
@@ -138,11 +146,51 @@ void Drawable::showVehicleRoute(Vehicle *vehicle)
     mainWindow->showVehicleRoute(vehicle);
 }
 
+void Drawable::showStreet(Street *str)
+{
+    if(this->street){
+        this->street->getStreetView()->unhighlight();
+    }
+    QBrush brush;
+    brush.setColor(Qt::blue);
+    brush.setStyle(Qt::BrushStyle::SolidPattern);
+
+    if(this->vehicle){
+        this->vehicle->elipse->setBrush(brush);
+        auto line = this->vehicle->getLine();
+
+        auto streets = line->getAllStreets();
+
+        for(auto str : streets){
+            str->getStreetView()->unhighlight();
+        }
+
+    }
+
+    this->vehicle = nullptr;
+    this->street = str;
+
+    str->getStreetView()->highlight();
+
+    mainWindow->showStreet(street);
+}
+
+void Drawable::setCongestionDegree(qreal d)
+{
+    if(this->street){
+        street->setCongestionDegree(d);
+    }
+}
+
 
 void Drawable::update()
 {
     if(this->vehicle){
         mainWindow->showVehicleRoute(vehicle);
+    }
+
+    if(this->street){
+        mainWindow->showStreet(street);
     }
 }
 

@@ -53,6 +53,7 @@ private:
     QString id;
     unsigned vehicleNum;
 
+
 };
 
 #endif // LINE_H

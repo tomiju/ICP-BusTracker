@@ -3,6 +3,7 @@
 #include "line.h"
 #include "stop.h"
 #include "vehicleview.h"
+#include "street.h"
 
 #include <QDebug>
 #include <QPoint>
@@ -18,6 +19,7 @@ Vehicle::Vehicle(QString id, QPointF *c,Line* line, std::vector<unsigned> t)
     this->nextStop = 0;
     this->times = t;
     this->dead = false;
+    this->delay = 0;
 
 }
 
@@ -44,9 +46,7 @@ void Vehicle::setRoute()
     auto stop = line->getStop(nextStop);
 
     if(stop == nullptr ){
-        txt->hide();
-        elipse->hide();
-        dead = true;
+        reset();
         return;
     }
 
@@ -56,6 +56,7 @@ void Vehicle::setRoute()
 
     while(1){
         Street* str = line->getStreet(streetN);
+
         if(stop->getStreet() == str){
             break;
         }
@@ -72,7 +73,9 @@ void Vehicle::setRoute()
     }
 
     path->lineTo(*stop->getCoordinate());
-    currentStreet = streetN;
+
+
+    qDebug() << *path << path->elementAt(0) <<path->elementAt(1);
 }
 
 Line *Vehicle::getLine()
@@ -90,9 +93,19 @@ unsigned Vehicle::getNextStopN()
     return nextStop;
 }
 
+Street* Vehicle::getCurrentStreet()
+{
+    return line->getStreet(currentStreet);
+}
+
 std::vector<unsigned> Vehicle::getStopTimes()
 {
     return times;
+}
+
+qreal Vehicle::getDelay()
+{
+    return delay;
 }
 
 void Vehicle::kill()
@@ -120,6 +133,7 @@ void Vehicle::reset()
     this->kill();
     this->currentStreet = 0;
     this->nextStop = 0;
+    this->delay = 0;
     auto newPoint = line->getStop(0)->getCoordinate();
 
     double newX = newPoint->x();
@@ -142,14 +156,17 @@ void Vehicle::touch()
         return;
     }
 
+    auto str = line->getStreet(currentStreet);
+
+    this->time += 1/str->getCongestionDegree();
 
     if(this->time >= this->routeTime){
         setRoute();
         return;
     }
 
-    this->time += 1;
-    double progress = static_cast< double >( this->time) / this->routeTime;
+    this->delay += 1 - 1/str->getCongestionDegree();
+    double progress = this->time / this->routeTime;
 
     QPointF newPoint = path->pointAtPercent(progress);
 
@@ -164,5 +181,9 @@ void Vehicle::touch()
 
     this->txt->setX(newX);
     this->txt->setY(newY + 15);
+
+    if(!str->contains(c)){
+        currentStreet += 1;
+    }
 
 }

@@ -25,11 +25,16 @@ public:
 
     void showVehicleRoute(Vehicle *vehicle);
 
+    void showStreet(Street *street);
+
+    void setCongestionDegree(qreal d);
+
 private:
     MainWindow* mainWindow;
     QGraphicsScene* scene;
     Vehicle* vehicle;
     Line* line;
+    Street* street;
 
 public slots:
 

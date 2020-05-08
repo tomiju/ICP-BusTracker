@@ -7,6 +7,8 @@
 #include "vehicle.h"
 #include "line.h"
 
+#include <cmath>
+#include <iostream>
 #include <QPushButton>
 #include <QGraphicsEllipseItem>
 #include <QAnimationGroup>
@@ -30,6 +32,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->stopPlayButton,&QPushButton::clicked,this,&MainWindow::stopPlay);
     connect(ui->resetButton,&QPushButton::clicked,this,&MainWindow::resetTime);
     connect(ui->lineEdit, &QLineEdit::textEdited,this,&MainWindow::setTime);
+    connect(ui->congestionButton, &QPushButton::clicked, this, &MainWindow::setCongestionDegree);
+
+    ui->deleteStreetButton->hide();
+    ui->lineEditCongestion->hide();
+    ui->congestionButton->hide();
 
     QGraphicsScene* scene = new QGraphicsScene(ui->graphicsView);
     ui->graphicsView->setScene(scene);
@@ -56,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent)
     str2->addStop(s3);
 
     Drawable* draw = new Drawable(scene,this);
+    this->drawable = draw;
+
 
     draw->drawStreet(str1);
     draw->drawStreet(str2);
@@ -64,6 +73,8 @@ MainWindow::MainWindow(QWidget *parent)
     draw->drawStop(s1);
     draw->drawStop(s2);
     draw->drawStop(s3);
+
+
 
     Line* line = new Line("Line");
 
@@ -96,8 +107,6 @@ MainWindow::MainWindow(QWidget *parent)
     timer->setInterval(1000);
     timer->start();
 
-
-
 }
 
 
@@ -126,6 +135,9 @@ void MainWindow::restart()
 void MainWindow::showVehicleRoute(Vehicle *vehicle)
 {
     ui->listWidget->clear();
+    ui->deleteStreetButton->hide();
+    ui->lineEditCongestion->hide();
+    ui->congestionButton->hide();
 
     if(vehicle->isDead()){
         return;
@@ -134,7 +146,15 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
     auto stops = vehicle->getStops();
     auto times = vehicle->getStopTimes();
 
-    ui->listWidget->addItem(vehicle->getId());
+    qreal delay = vehicle->getDelay();
+    delay = delay / 5;
+    delay = std::floor(delay);
+    delay = delay * 5;
+
+
+    QString str = vehicle->getId() + " " + vehicle->getCurrentStreet()->getId() + " delay: " + QString::number(delay) + "s";
+
+    ui->listWidget->addItem(str);
 
     for(unsigned i = 0; i < stops.size(); i++){
 
@@ -143,7 +163,7 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
         time.setHMS(0,0,0);
         time = time.addSecs(t);
 
-        QString str = time.toString() + "\t" + stops.at(i)->getId();
+        str = time.toString() + "\t" + stops.at(i)->getId();
 
         ui->listWidget->addItem(str);
 
@@ -153,6 +173,32 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
 
     if(nextStop < ui->listWidget->count()){
         ui->listWidget->item(nextStop)->setBackgroundColor(Qt::red);
+    }
+
+}
+
+void MainWindow::showStreet(Street *street)
+{
+    ui->listWidget->clear();
+
+    QString str = street->getId() + " congestion degree: " + QString::number(street->getCongestionDegree());
+
+    ui->listWidget->addItem(str);
+    ui->deleteStreetButton->show();
+    ui->lineEditCongestion->show();
+    ui->congestionButton->show();
+
+}
+
+void MainWindow::setCongestionDegree()
+{
+    QString str = ui->lineEditCongestion->text();
+
+    qreal degree = str.toDouble();
+    if(degree < 1){
+        ui->lineEditCongestion->setText("Must be number greater or equal to 1");
+    }else{
+        drawable->setCongestionDegree(degree);
     }
 
 }
@@ -213,6 +259,7 @@ void MainWindow::setTime()
 
     for(int i = 0; i < t; i++){
         mainLine->touch();
+        updatemainTime();
     }
 }
 

@@ -30,11 +30,18 @@ public:
 
         StreetView* getStreetView();
 
+        qreal getCongestionDegree();
+
+        bool contains(QPointF* point);
+
+        void setCongestionDegree(qreal d);
+
     private:
         QString id;
         vector<QPointF*> coordinates;
         vector<Stop*> stops;
         StreetView* view;
+        qreal congestionDegree;
 
 };
 

@@ -16,6 +16,7 @@ public:
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* event)override;
 
+
 private:
     Drawable* drawable;
     Vehicle* vehicle;
