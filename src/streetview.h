@@ -16,7 +16,11 @@ public:
 
     void highlight();
 
+    void  highlight2();
+
     void unhighlight();
+
+    void close();
 
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* event)override;
 

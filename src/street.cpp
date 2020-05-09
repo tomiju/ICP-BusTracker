@@ -11,6 +11,14 @@
 
 using namespace std;
 
+Street::Street(QString id, QPointF* c1, QPointF* c2){
+    this->id = id;
+    coordinates.push_back(c1);
+    coordinates.push_back(c2);
+    congestionDegree = 1;
+    closed = false;
+}
+
 QString Street::getId(){
     return id;
 }
@@ -21,13 +29,6 @@ vector<QPointF*> Street::getCoordinates(){
 
 vector<Stop*> Street::getStops(){
     return stops;
-}
-
-Street::Street(QString id, QPointF* c1, QPointF* c2){
-    this->id = id;
-    coordinates.push_back(c1);
-    coordinates.push_back(c2);
-    congestionDegree = 1;
 }
 
 void Street::addStop(Stop* stop){
@@ -66,5 +67,38 @@ bool Street::contains(QPointF *point)
 void Street::setCongestionDegree(qreal d)
 {
     congestionDegree = d;
+}
+
+bool Street::isClosed()
+{
+    return closed;
+}
+
+void Street::close()
+{
+    closed = true;
+}
+
+bool Street::isNeighbor(Street *str)
+{
+    auto coords = str->getCoordinates();
+
+    if(*coords[0] == *coordinates[0]){
+        return true;
+    }
+
+    if(*coords[0] == *coordinates[1]){
+        return true;
+    }
+
+    if(*coords[1] == *coordinates[0]){
+        return true;
+    }
+
+    if(*coords[1] == *coordinates[1]){
+        return true;
+    }
+
+    return false;
 }
 

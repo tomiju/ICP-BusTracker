@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>821</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -92,7 +92,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="deleteStreetButton">
+       <widget class="QPushButton" name="closeStreetButton">
         <property name="text">
          <string>Close Street</string>
         </property>
@@ -112,6 +112,13 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="setRouteButton">
+        <property name="text">
+         <string>Set Route</string>
         </property>
        </widget>
       </item>
@@ -140,7 +147,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>821</width>
      <height>25</height>
     </rect>
    </property>

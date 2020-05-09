@@ -25,10 +25,20 @@ public:
     void zoomIn();
 
     void zoomOut();
+
     void restart();
+
     void showVehicleRoute(Vehicle *vehicle);
+
     void showStreet(Street *street);
+
     void setCongestionDegree();
+
+    void stop();
+
+    std::vector<Line *> getLines();
+
+    void showNewRoute(Line* line, std::vector<Street*>);
 
 public slots:
     void setTimer();
@@ -42,7 +52,6 @@ private:
     Ui::MainWindow *ui;
     QTimer* timer;
     unsigned mainTime;
-    Line* mainLine;
     Drawable* drawable;
     std::vector<Line*> lines;
 

@@ -64,8 +64,16 @@ void Vehicle::setRoute()
         auto point = line->getCommonPoint(streetN,streetN + 1);
 
         if(point == nullptr){
-            qDebug() << "no common point";
-            return;
+            nextStop += 1;
+            if(nextStop >= line->getStops().size()){
+                this->kill();
+                return;
+            }
+            path = new QPainterPath(*this->c);
+            streetN = this->currentStreet;
+            routeTime += times.at(nextStop) - times.at(nextStop - 1);
+            stop = line->getStop(nextStop);
+            continue;
         }
 
         path->lineTo(*point);

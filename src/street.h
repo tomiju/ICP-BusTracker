@@ -36,12 +36,19 @@ public:
 
         void setCongestionDegree(qreal d);
 
+        bool isClosed();
+
+        void close();
+
+        bool isNeighbor(Street *str);
+
     private:
         QString id;
         vector<QPointF*> coordinates;
         vector<Stop*> stops;
         StreetView* view;
         qreal congestionDegree;
+        bool closed;
 
 };
 

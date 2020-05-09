@@ -41,6 +41,12 @@ public:
 
     void setDrawable(Drawable* d);
 
+    bool containsStreet(Street* s);
+
+    void setRoute(std::vector<Street*> str);
+
+    QString getId();
+
 
 
 public slots:

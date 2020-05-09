@@ -29,16 +29,29 @@ public:
 
     void setCongestionDegree(qreal d);
 
+    void streetOnClick(Street* str);
+
+    bool isEditMode();
+
 private:
     MainWindow* mainWindow;
     QGraphicsScene* scene;
     Vehicle* vehicle;
     Line* line;
     Street* street;
+    bool editMode;
+    std::vector<Street*> newStreets;
+    std::vector<Line*> effectedLines;
 
 public slots:
 
+    void closeStreet();
+
     void update();
+
+    void setRoute();
+
+
 };
 
 #endif // DRAWABLE_H

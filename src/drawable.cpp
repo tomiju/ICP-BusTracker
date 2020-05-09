@@ -10,9 +10,10 @@
 #include <QGraphicsScene>
 #include <vector>
 #include <QGraphicsTextItem>
-#include<QGraphicsEllipseItem>
+#include <QGraphicsEllipseItem>
 #include <QPainter>
-#include<QGraphicsLineItem>
+#include <QGraphicsLineItem>
+#include <QDebug>
 
 Drawable::Drawable(QGraphicsScene* s,MainWindow* mw)
 {
@@ -21,6 +22,8 @@ Drawable::Drawable(QGraphicsScene* s,MainWindow* mw)
     this->vehicle = nullptr;
     this->line = nullptr;
     this->street = nullptr;
+    editMode = false;
+    newStreets = {};
 }
 
 void Drawable::drawStreet(Street* street)
@@ -41,6 +44,7 @@ void Drawable::drawStreet(Street* street)
     QGraphicsTextItem* name = scene->addText(street->getId());
     name->setX((x1+x2)/2);
     name->setY((y1+y2)/2);
+    name->hide();
 
 }
 
@@ -52,12 +56,10 @@ void Drawable::drawStop(Stop* stop)
     double x = coordinate->x();
     double y = coordinate->y();
 
-    auto ellipse = scene->addEllipse(x - 10, y - 10 , 20, 20);
+    auto ellipse = scene->addEllipse(x - 5, y - 5 , 10, 10);
 
     QBrush brush;
-    QColor color;
-    color.setRgb(121, 236, 121);
-    brush.setColor(color);
+    brush.setColor(Qt::white);
     brush.setStyle(Qt::BrushStyle::SolidPattern);
 
     QPen pen;
@@ -65,10 +67,12 @@ void Drawable::drawStop(Stop* stop)
 
     ellipse->setBrush(brush);
     ellipse->setPen(pen);
+    ellipse->setZValue(2);
 
     QGraphicsTextItem* name = scene->addText(stop->getId());
     name->setX(x);
     name->setY(y);
+    name->hide();
 }
 
 void Drawable::drawVehicle(Vehicle *vehicle)
@@ -79,7 +83,7 @@ void Drawable::drawVehicle(Vehicle *vehicle)
 
     vehicle->elipse = e;
     scene->addItem(e);
-    e->setZValue(2);
+    e->setZValue(3);
 
     vehicle->elipse->setX(p->x() - 5);
     vehicle->elipse->setY(p->y() - 5);
@@ -91,14 +95,16 @@ void Drawable::drawVehicle(Vehicle *vehicle)
     QPen pen;
     pen.setWidth(2);
 
+
     vehicle->elipse->setPen(pen);
     vehicle->elipse->setBrush(brush);
 
     vehicle->elipse->update();
 
-    QGraphicsTextItem* name = scene->addText(vehicle->getId());
+    QGraphicsTextItem* name = scene->addText(vehicle->getLine()->getId());
     name->setX(p->x());
     name->setY(p->y() + 10);
+    name->setDefaultTextColor(Qt::blue);
 
     vehicle->txt = name;
 
@@ -108,7 +114,10 @@ void Drawable::drawVehicle(Vehicle *vehicle)
 void Drawable::showVehicleRoute(Vehicle *vehicle)
 {
 
-    this->street = nullptr;
+    if(editMode){
+        return;
+    }
+
     QBrush brush;
     brush.setColor(Qt::blue);
     brush.setStyle(Qt::BrushStyle::SolidPattern);
@@ -116,6 +125,8 @@ void Drawable::showVehicleRoute(Vehicle *vehicle)
     if(this->street){
         this->street->getStreetView()->unhighlight();
     }
+
+    this->street = nullptr;
 
     if(this->vehicle){
         this->vehicle->elipse->setBrush(brush);
@@ -182,6 +193,80 @@ void Drawable::setCongestionDegree(qreal d)
     }
 }
 
+void Drawable::streetOnClick(Street *str)
+{
+
+    if(!editMode){
+        showStreet(str);
+        return;
+    }
+
+     if(str->isClosed()){
+        return;
+     }
+
+     for(auto s : newStreets){
+         if(s->getId() == str->getId()){
+             return;
+         }
+     }
+
+     if(newStreets.empty()){
+         qDebug() << "added str: " + str->getId();
+         str->getStreetView()->highlight2();
+         newStreets.push_back(str);
+         mainWindow->showNewRoute(effectedLines.at(0),newStreets);
+
+         return;
+     }
+
+     if(newStreets.back()->isNeighbor(str)){
+         qDebug() << "added str: " + str->getId();
+         str->getStreetView()->highlight2();
+         newStreets.push_back(str);
+         mainWindow->showNewRoute(effectedLines.at(0),newStreets);
+         return;
+     }
+
+}
+
+bool Drawable::isEditMode()
+{
+    return editMode;
+}
+
+void Drawable::closeStreet()
+{
+    if(editMode){
+        return;
+    }
+
+    effectedLines = {};
+    auto lines = mainWindow->getLines();
+
+    for(auto l : lines){
+        if(l->containsStreet(this->street)){
+            effectedLines.push_back(l);
+        }
+    }
+
+    if(effectedLines.empty()){
+        street->getStreetView()->close();
+        street->close();
+        return;
+    }
+
+    mainWindow->stop();
+    mainWindow->resetTime();
+    mainWindow->showNewRoute(effectedLines.at(0),newStreets);
+
+    if(this->street){
+        street->getStreetView()->close();
+        this->editMode = true;
+        street->close();
+    }
+}
+
 
 void Drawable::update()
 {
@@ -193,5 +278,25 @@ void Drawable::update()
         mainWindow->showStreet(street);
     }
 }
+
+void Drawable::setRoute()
+{
+    if(effectedLines.empty()){
+        return;
+    }
+
+    effectedLines.at(0)->setRoute(this->newStreets);
+    effectedLines.erase(effectedLines.begin());
+    for(auto s : newStreets){
+        s->getStreetView()->unhighlight();
+    }
+    newStreets = {};
+
+    if(effectedLines.empty()){
+        this->editMode = false;
+    }
+
+}
+
 
 

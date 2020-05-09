@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->lineEdit, &QLineEdit::textEdited,this,&MainWindow::setTime);
     connect(ui->congestionButton, &QPushButton::clicked, this, &MainWindow::setCongestionDegree);
 
-    ui->deleteStreetButton->hide();
+    ui->closeStreetButton->hide();
     ui->lineEditCongestion->hide();
     ui->congestionButton->hide();
 
@@ -51,17 +51,19 @@ MainWindow::MainWindow(QWidget *parent)
             tr("Open map file"), "",
             tr("Json files (*.json)"));
 
+
     qDebug() << "name: " << name;
 
     JsonFactory* factory = new JsonFactory(name,draw);
 
-    this->mainLine = factory->getLines()[0];
     this->lines = factory->getLines();
 
     timer = new QTimer();
     connect(timer, &QTimer::timeout, this, &MainWindow::updateLines);
     connect(timer, &QTimer::timeout, this, &MainWindow::updatemainTime);
     connect(timer, &QTimer::timeout, draw, &Drawable::update);
+    connect(ui->closeStreetButton, &QPushButton::clicked, draw,  &Drawable::closeStreet);
+    connect(ui->setRouteButton, &QPushButton::clicked, draw,  &Drawable::setRoute);
 
     timer->setInterval(1000);
     timer->start();
@@ -71,7 +73,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    this->timer->stop();
     delete ui;
+
 }
 
 
@@ -94,7 +98,7 @@ void MainWindow::restart()
 void MainWindow::showVehicleRoute(Vehicle *vehicle)
 {
     ui->listWidget->clear();
-    ui->deleteStreetButton->hide();
+    ui->closeStreetButton->hide();
     ui->lineEditCongestion->hide();
     ui->congestionButton->hide();
 
@@ -143,7 +147,7 @@ void MainWindow::showStreet(Street *street)
     QString str = street->getId() + " congestion degree: " + QString::number(street->getCongestionDegree());
 
     ui->listWidget->addItem(str);
-    ui->deleteStreetButton->show();
+    ui->closeStreetButton->show();
     ui->lineEditCongestion->show();
     ui->congestionButton->show();
 
@@ -160,6 +164,27 @@ void MainWindow::setCongestionDegree()
         drawable->setCongestionDegree(degree);
     }
 
+}
+
+void MainWindow::stop()
+{
+    this->timer->stop();
+    this->ui->stopPlayButton->setText("Play");
+}
+
+std::vector<Line *> MainWindow::getLines()
+{
+    return lines;
+}
+
+void MainWindow::showNewRoute(Line *line, std::vector<Street *> str)
+{
+    ui->listWidget->clear();
+    ui->listWidget->addItem(line->getId());
+
+    for(auto s : str){
+        ui->listWidget->addItem(s->getId());
+    }
 }
 
 
@@ -182,6 +207,10 @@ void MainWindow::setTimer()
 
 void MainWindow::stopPlay()
 {
+    if(drawable->isEditMode()){
+        return;
+    }
+
     if(this->timer->isActive()){
         this->timer->stop();
         ui->stopPlayButton->setText("Play");
@@ -204,12 +233,23 @@ void MainWindow::updatemainTime()
 
 void MainWindow::resetTime()
 {
+    if(drawable->isEditMode()){
+        return;
+    }
+
     mainTime = 0;
-    mainLine->reset();
+    for(auto l : lines){
+        l->reset();
+    }
+     drawable->update();
 }
 
 void MainWindow::setTime()
 {
+    if(drawable->isEditMode()){
+        return;
+    }
+
     resetTime();
 
     QString str = ui->lineEdit->text();
@@ -217,9 +257,13 @@ void MainWindow::setTime()
     int t = str.toInt();
 
     for(int i = 0; i < t; i++){
-        mainLine->touch();
+        for(auto l : lines){
+            l->touch();
+        }
         updatemainTime();
     }
+
+    drawable->update();
 }
 
 void MainWindow::updateLines()

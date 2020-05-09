@@ -56,8 +56,7 @@ Street *Line::getStreet(unsigned n)
 
 QPointF *Line::getCommonPoint(unsigned n1, unsigned n2)
 {
-    if(streets.size() < n1 || streets.size() < n2 ){
-        qDebug() << "Number of streets too high";
+    if(streets.size() <= n1 || streets.size() <= n2 ){
         return nullptr;
     }
 
@@ -127,6 +126,29 @@ void Line::reset()
 void Line::setDrawable(Drawable *d)
 {
     draw = d;
+}
+
+bool Line::containsStreet(Street *s)
+{
+   for(auto str : streets){
+        if(s->getId() == str->getId() ){
+            return true;
+        }
+   }
+
+   return false;
+}
+
+void Line::setRoute(std::vector<Street *> str)
+{
+
+    this->streets = str;
+    this->reset();
+}
+
+QString Line::getId()
+{
+    return id;
 }
 
 
