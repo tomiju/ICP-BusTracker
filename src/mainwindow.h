@@ -36,6 +36,7 @@ public slots:
     void updatemainTime();
     void resetTime();
     void setTime();
+    void updateLines();
 
 private:
     Ui::MainWindow *ui;
@@ -43,6 +44,7 @@ private:
     unsigned mainTime;
     Line* mainLine;
     Drawable* drawable;
+    std::vector<Line*> lines;
 
 };
 #endif // MAINWINDOW_H

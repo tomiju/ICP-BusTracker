@@ -53,15 +53,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     qDebug() << "name: " << name;
 
-
     JsonFactory* factory = new JsonFactory(name,draw);
 
-    auto stops = factory->getStops();
-
     this->mainLine = factory->getLines()[0];
+    this->lines = factory->getLines();
 
     timer = new QTimer();
-    connect(timer, &QTimer::timeout, factory->getLines()[0], &Line::touch);
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateLines);
     connect(timer, &QTimer::timeout, this, &MainWindow::updatemainTime);
     connect(timer, &QTimer::timeout, draw, &Drawable::update);
 
@@ -221,6 +219,13 @@ void MainWindow::setTime()
     for(int i = 0; i < t; i++){
         mainLine->touch();
         updatemainTime();
+    }
+}
+
+void MainWindow::updateLines()
+{
+    for(auto l : lines){
+        l->touch();
     }
 }
 
