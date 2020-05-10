@@ -20,6 +20,7 @@
 #include "stop.h"
 #include "line.h"
 #include "drawable.h"
+#include <QLineF>
 
 JsonFactory::JsonFactory(QString name, Drawable* d)
 {
@@ -66,9 +67,6 @@ void JsonFactory::createStreets(QJsonObject* obj)
         int y1 = strObj.value("y1").toInt();
         int y2 = strObj.value("y2").toInt();
 
-        qDebug() << id << x1 << y1 << x2 << y2;
-
-
         Street* str = new Street(id,new QPointF(x1,y1),new QPointF(x2,y2));
         streets.push_back(str);
 
@@ -83,24 +81,32 @@ void JsonFactory::createStops(QJsonObject *obj)
      for(auto stopObjValue :stopsArray ){
          auto stopObj = stopObjValue.toObject();
          QString id = stopObj.value("id").toString();
-         int x = stopObj.value("x").toInt();
-         int y = stopObj.value("y").toInt();
+         qreal pos = stopObj.value("at").toDouble();
          QString strId = stopObj.value("street").toString();
-
-         qDebug() << id << x << y << strId;
-
-
-         Stop* stop = new Stop(id,new QPointF(x,y));
-         stops.push_back(stop);
 
          for(auto str : streets){
              if(str->getId() == strId){
-                 str->addStop(stop);
-                 break;
+                 auto* p1 = str->getCoordinates()[0];
+                 auto* p2 = str->getCoordinates()[1];
+                 auto p3 = QLineF(*p1,*p2).pointAt(pos);
+
+                 Stop* stop = new Stop(id,new QPointF(p3));
+                 stops.push_back(stop);
+
+
+
+
+                 if(str->contains(stop->getCoordinate())){
+                     str->addStop(stop);
+
+                     drawable->drawStop(stop);
+                     break;
+                 }else{
+                     qDebug() << "Stop " << id << " is not on street " << str->getId();
+                 }
              }
          }
 
-         drawable->drawStop(stop);
      }
 }
 

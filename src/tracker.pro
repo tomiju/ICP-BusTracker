@@ -25,7 +25,6 @@ SOURCES += \
     stopview.cpp \
     street.cpp \
     streetview.cpp \
-    textview.cpp \
     vehicle.cpp \
     vehicleview.cpp
 
@@ -38,7 +37,6 @@ HEADERS += \
     stopview.h \
     street.h \
     streetview.h \
-    textview.h \
     vehicle.h \
     vehicleview.h
 
