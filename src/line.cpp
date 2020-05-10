@@ -1,3 +1,10 @@
+/** ICP Project 2019/2020: Bus Tracker
+ * @file line.cpp
+ * @brief Trida reprezentujici autobusovou linku
+ * @author Tomáš Julina (xjulin08)
+ * @author Tomáš Kantor (xkanto14)
+ */
+
 #include "line.h"
 
 #include "street.h"
@@ -167,6 +174,3 @@ void Line::touch()
 
     time += 1;
 }
-
-
-

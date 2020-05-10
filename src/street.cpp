@@ -1,3 +1,10 @@
+/** ICP Project 2019/2020: Bus Tracker
+ * @file street.cpp
+ * @brief Trida reprezentujici ulici
+ * @author Tomáš Julina (xjulin08)
+ * @author Tomáš Kantor (xkanto14)
+ */
+
 #include "street.h"
 
 #include <string>
@@ -101,4 +108,3 @@ bool Street::isNeighbor(Street *str)
 
     return false;
 }
-

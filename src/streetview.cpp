@@ -1,3 +1,10 @@
+/** ICP Project 2019/2020: Bus Tracker
+ * @file streetview.cpp
+ * @brief Trida pro ulozeni graficke reprezentace ulice
+ * @author Tomáš Julina (xjulin08)
+ * @author Tomáš Kantor (xkanto14)
+ */
+
 #include "streetview.h"
 
 #include <QPen>

@@ -1,3 +1,10 @@
+/** ICP Project 2019/2020: Bus Tracker
+ * @file vehicle.cpp
+ * @brief Trida reprezentujici vozidlo
+ * @author Tomáš Julina (xjulin08)
+ * @author Tomáš Kantor (xkanto14)
+ */
+
 #include "vehicle.h"
 #include "mainwindow.h"
 #include "line.h"

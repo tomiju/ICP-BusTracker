@@ -1,3 +1,10 @@
+/** ICP Project 2019/2020: Bus Tracker
+ * @file vehicleview.cpp
+ * @brief Trida pro ulozeni graficke reprezentace vozidla
+ * @author Tomáš Julina (xjulin08)
+ * @author Tomáš Kantor (xkanto14)
+ */
+
 #include "vehicleview.h"
 #include "QBrush"
 #include "drawable.h"
@@ -23,5 +30,3 @@ void VehicleView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     drawable->showVehicleRoute(vehicle);
 
 }
-
-

@@ -1,3 +1,10 @@
+/** ICP Project 2019/2020: Bus Tracker
+ * @file mainwindow.cpp
+ * @brief Trida, ktera ovlada hlavni okno programu, zapina jizdu, atd...
+ * @author Tomáš Julina (xjulin08)
+ * @author Tomáš Kantor (xkanto14)
+ */
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -272,6 +279,3 @@ void MainWindow::updateLines()
         l->touch();
     }
 }
-
-
-

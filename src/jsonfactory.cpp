@@ -1,3 +1,10 @@
+/** ICP Project 2019/2020: Bus Tracker
+ * @file jsonfactory.cpp
+ * @brief Trida pro zpracovani vstupniho souboru s daty do interni reprezentace
+ * @author Tomáš Julina (xjulin08)
+ * @author Tomáš Kantor (xkanto14)
+ */
+
 #include "jsonfactory.h"
 
 #include <QFile>

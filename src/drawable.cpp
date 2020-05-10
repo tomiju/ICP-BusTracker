@@ -1,3 +1,10 @@
+/** ICP Project 2019/2020: Bus Tracker
+ * @file drawable.cpp
+ * @brief Trida pro vykreslovane objekty na mape
+ * @author Tomáš Julina (xjulin08)
+ * @author Tomáš Kantor (xkanto14)
+ */
+
 #include "drawable.h"
 #include "street.h"
 #include "stop.h"
@@ -14,6 +21,7 @@
 #include <QPainter>
 #include <QGraphicsLineItem>
 #include <QDebug>
+
 
 Drawable::Drawable(QGraphicsScene* s,MainWindow* mw)
 {
@@ -297,6 +305,3 @@ void Drawable::setRoute()
     }
 
 }
-
-
-

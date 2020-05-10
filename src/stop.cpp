@@ -1,3 +1,10 @@
+/** ICP Project 2019/2020: Bus Tracker
+ * @file stop.cpp
+ * @brief Trida reprezentujici zastavku
+ * @author Tomáš Julina (xjulin08)
+ * @author Tomáš Kantor (xkanto14)
+ */
+
 #include<iostream>
 #include <vector>
 #include <QPointF>
