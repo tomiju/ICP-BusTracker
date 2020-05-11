@@ -103,7 +103,6 @@ void Drawable::drawVehicle(Vehicle *vehicle)
     QPen pen;
     pen.setWidth(2);
 
-
     vehicle->elipse->setPen(pen);
     vehicle->elipse->setBrush(brush);
 
@@ -115,7 +114,6 @@ void Drawable::drawVehicle(Vehicle *vehicle)
     name->setDefaultTextColor(Qt::blue);
 
     vehicle->txt = name;
-
 
 }
 

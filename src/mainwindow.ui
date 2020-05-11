@@ -30,25 +30,25 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPushButton" name="ZoomOut">
+       <widget class="QLabel" name="TimeLabel">
         <property name="text">
-         <string>Zoom Out</string>
+         <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="ZoomIn">
-        <property name="text">
-         <string>Zoom In</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="changeTimeButton">
-        <property name="text">
-         <string>Speed 1:1</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="setTimeButton">
+          <property name="text">
+           <string>Set  Time</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTimeEdit" name="timeEdit"/>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="QPushButton" name="stopPlayButton">
@@ -65,21 +65,29 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="QPushButton" name="changeTimeButton">
+        <property name="text">
+         <string>Speed 1:1</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="TimeLabel">
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QPushButton" name="ZoomIn">
+          <property name="text">
+           <string>Zoom In</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="ZoomOut">
+          <property name="text">
+           <string>Zoom Out</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="QListWidget" name="listWidget">
@@ -88,6 +96,13 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="infoLabel">
+        <property name="text">
+         <string>TextLabel</string>
         </property>
        </widget>
       </item>

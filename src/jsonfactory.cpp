@@ -93,9 +93,6 @@ void JsonFactory::createStops(QJsonObject *obj)
                  Stop* stop = new Stop(id,new QPointF(p3));
                  stops.push_back(stop);
 
-
-
-
                  if(str->contains(stop->getCoordinate())){
                      str->addStop(stop);
 

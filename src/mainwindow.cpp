@@ -40,8 +40,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->changeTimeButton,&QPushButton::clicked,this,&MainWindow::setTimer);
     connect(ui->stopPlayButton,&QPushButton::clicked,this,&MainWindow::stopPlay);
     connect(ui->resetButton,&QPushButton::clicked,this,&MainWindow::resetTime);
-    connect(ui->lineEdit, &QLineEdit::textEdited,this,&MainWindow::setTime);
+    connect(ui->setTimeButton, &QPushButton::clicked,this,&MainWindow::setTime);
     connect(ui->congestionButton, &QPushButton::clicked, this, &MainWindow::setCongestionDegree);
+    ui->timeEdit->setDisplayFormat("hh:mm:ss");
+    ui->infoLabel->setText("txt\ntxt");
+
 
     ui->closeStreetButton->hide();
     ui->lineEditCongestion->hide();
@@ -54,10 +57,14 @@ MainWindow::MainWindow(QWidget *parent)
     Drawable* draw = new Drawable(scene,this);
     this->drawable = draw;
 
-     QString name = QFileDialog::getOpenFileName(this,
+     QString name;
+     /*
+     name = QFileDialog::getOpenFileName(this,
             tr("Open map file"), "",
             tr("Json files (*.json)"));
 
+     name = "../examples/map.json";
+     */
 
     qDebug() << "name: " << name;
 
@@ -104,6 +111,9 @@ void MainWindow::restart()
 
 void MainWindow::showVehicleRoute(Vehicle *vehicle)
 {
+
+    ui->infoLabel->setText("");
+
     ui->listWidget->clear();
     ui->closeStreetButton->hide();
     ui->lineEditCongestion->hide();
@@ -123,8 +133,14 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
 
 
     QString str = vehicle->getId() + " " + vehicle->getCurrentStreet()->getId() + " delay: " + QString::number(delay) + "s";
+    QString infoStr = "Id: " + vehicle->getId() + "\n";
+    infoStr += "Next Stop: " + vehicle->getStops().at(vehicle->getNextStopN())->getId() + "\n";
+    infoStr += "Street: " + vehicle->getCurrentStreet()->getId() + "\n";
+    infoStr += "Delay: " + QString::number(delay) + "s\n";
+    infoStr += "Stops:\n";
 
     ui->listWidget->addItem(str);
+
 
     for(unsigned i = 0; i < stops.size(); i++){
 
@@ -134,10 +150,12 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
         time = time.addSecs(t);
 
         str = time.toString() + "\t" + stops.at(i)->getId();
-
+        infoStr += stops.at(i)->getId() + " : "+ time.toString() + "\n";
         ui->listWidget->addItem(str);
 
     }
+
+    ui->infoLabel->setText(infoStr);
 
     int nextStop = 1 + static_cast<int>(vehicle->getNextStopN());
 
@@ -157,6 +175,7 @@ void MainWindow::showStreet(Street *street)
     ui->closeStreetButton->show();
     ui->lineEditCongestion->show();
     ui->congestionButton->show();
+
 
 }
 
@@ -198,12 +217,12 @@ void MainWindow::showNewRoute(Line *line, std::vector<Street *> str)
 void MainWindow::setTimer()
 {
 
-    int t[9] = {1000,500,200,100,50,20,10,5,2};
+    int t[10] = {1000,500,200,100,50,20,10,5,2,1};
 
     static int speed = 0;
     speed += 1;
 
-    if(speed > 8){
+    if(speed > 9){
         speed = 0;
     }
 
@@ -259,9 +278,9 @@ void MainWindow::setTime()
 
     resetTime();
 
-    QString str = ui->lineEdit->text();
+    auto time = ui->timeEdit->time();
 
-    int t = str.toInt();
+    int t = time.hour()*3600 + time.minute()*60 + time.second();
 
     for(int i = 0; i < t; i++){
         for(auto l : lines){
