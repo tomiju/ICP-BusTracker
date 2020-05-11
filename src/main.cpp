@@ -14,7 +14,11 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    w.show();
+
+    w.setMapFileName(argv[1]);
+
+    qDebug() << "name: " << argv;
+    w.showMaximized();
 
 
 

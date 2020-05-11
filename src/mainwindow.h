@@ -113,6 +113,22 @@ public slots:
      */
     void updateLines();
 
+    /**
+     * @brief setMapFileName nastavi cestu k souboru s mapou
+     * @param name nazev soubru s mapou
+     */
+    void setMapFileName(QString name);
+
+    /**
+     * @brief setEditMode nastavi vzhled okna pro zobrazeni editace
+     */
+    void setEditMode();
+
+    /**
+     * @brief setNormalMode nastavi vzhled pro bezne zobrazeni
+     */
+    void setNormalMode();
+
 private:
     /**
      * @brief ui
@@ -138,6 +154,11 @@ private:
      * @brief lines
      */
     std::vector<Line*> lines;
+
+    /**
+     * @brief mapFileName
+     */
+    QString mapFileName;
 
 };
 #endif // MAINWINDOW_H

@@ -13,4 +13,6 @@ clean:
 	rm src/icp
 
 pack:
-	
+	zip xjulin08_xkanto14 src/*.cpp src/*.h src/*.ui src/*.pro doc  README.txt Makefile examples/map.json
+
+doxygen:

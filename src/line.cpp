@@ -100,7 +100,7 @@ void Line::addToTimeTable(std::vector<QString> times)
 
     timetable.push_back(vec);
     this->vehicleNum += 1;
-    QString string = this->id + "v"  + QString::number(vehicleNum);
+    QString string = "v"  + QString::number(vehicleNum);
 
     auto startStop = this->stops.at(0);
     Vehicle* v = new Vehicle(string,startStop->getCoordinate(),this, vec);

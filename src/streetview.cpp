@@ -17,7 +17,7 @@ StreetView::StreetView(Drawable* d,Street* str,qreal x1, qreal y1, qreal x2, qre
     QGraphicsLineItem(x1,y1,x2,y2,parent)
 {
     QPen pen;
-    pen.setWidth(2);
+    pen.setWidth(4);
     setPen(pen);
     draw = d;
     street = str;

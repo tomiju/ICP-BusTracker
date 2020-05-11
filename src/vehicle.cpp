@@ -188,8 +188,8 @@ void Vehicle::touch()
     this->c->setX(newX);
     this->c->setY(newY);
 
-    this->elipse->setX(newX - 5);
-    this->elipse->setY(newY - 5);
+    this->elipse->setX(newX - 10);
+    this->elipse->setY(newY - 10);
 
     this->txt->setX(newX);
     this->txt->setY(newY + 15);

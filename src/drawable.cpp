@@ -64,14 +64,14 @@ void Drawable::drawStop(Stop* stop)
     double x = coordinate->x();
     double y = coordinate->y();
 
-    auto ellipse = scene->addEllipse(x - 5, y - 5 , 10, 10);
+    auto ellipse = scene->addEllipse(x - 10, y - 10 , 20, 20);
 
     QBrush brush;
     brush.setColor(Qt::white);
     brush.setStyle(Qt::BrushStyle::SolidPattern);
 
     QPen pen;
-    pen.setWidth(2);
+    pen.setWidth(4);
 
     ellipse->setBrush(brush);
     ellipse->setPen(pen);
@@ -80,28 +80,31 @@ void Drawable::drawStop(Stop* stop)
     QGraphicsTextItem* name = scene->addText(stop->getId());
     name->setX(x);
     name->setY(y);
-    name->hide();
+    auto font  = QFont();
+    font.setPointSize(2);
+    name->setFont(font);
+    name->setDefaultTextColor(Qt::black);
 }
 
 void Drawable::drawVehicle(Vehicle *vehicle)
 {
 
     QPointF* p = vehicle->getCoordinate();
-    auto e = new VehicleView(this,vehicle,0, 0, 10, 10);
+    auto e = new VehicleView(this,vehicle,0, 0, 20, 20);
 
     vehicle->elipse = e;
     scene->addItem(e);
     e->setZValue(3);
 
-    vehicle->elipse->setX(p->x() - 5);
-    vehicle->elipse->setY(p->y() - 5);
+    vehicle->elipse->setX(p->x() - 10);
+    vehicle->elipse->setY(p->y() - 10);
 
     QBrush brush;
     brush.setColor(Qt::blue);
     brush.setStyle(Qt::BrushStyle::SolidPattern);
 
     QPen pen;
-    pen.setWidth(2);
+    pen.setWidth(4);
 
     vehicle->elipse->setPen(pen);
     vehicle->elipse->setBrush(brush);
@@ -270,6 +273,7 @@ void Drawable::closeStreet()
         street->getStreetView()->close();
         this->editMode = true;
         street->close();
+        mainWindow->setEditMode();
     }
 }
 
@@ -300,6 +304,7 @@ void Drawable::setRoute()
 
     if(effectedLines.empty()){
         this->editMode = false;
+        mainWindow->setNormalMode();
     }
 
 }

@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowTitle("ICP Bus Tracker");
 
     mainTime = 0;
 
@@ -43,7 +44,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->setTimeButton, &QPushButton::clicked,this,&MainWindow::setTime);
     connect(ui->congestionButton, &QPushButton::clicked, this, &MainWindow::setCongestionDegree);
     ui->timeEdit->setDisplayFormat("hh:mm:ss");
-    ui->infoLabel->setText("txt\ntxt");
+    ui->infoLabel->setText("");
+    ui->setRouteButton->hide();
+
 
 
     ui->closeStreetButton->hide();
@@ -58,15 +61,15 @@ MainWindow::MainWindow(QWidget *parent)
     this->drawable = draw;
 
      QString name;
-     /*
+
      name = QFileDialog::getOpenFileName(this,
             tr("Open map file"), "",
             tr("Json files (*.json)"));
-     */
-     name = "../examples/map.json";
 
 
-    qDebug() << "name: " << name;
+
+
+    //name = QApplication::applicationDirPath() + "/../examples/map.json";
 
     JsonFactory* factory = new JsonFactory(name,draw);
 
@@ -114,7 +117,6 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
 
     ui->infoLabel->setText("");
 
-    ui->listWidget->clear();
     ui->closeStreetButton->hide();
     ui->lineEditCongestion->hide();
     ui->congestionButton->hide();
@@ -126,21 +128,21 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
     auto stops = vehicle->getStops();
     auto times = vehicle->getStopTimes();
 
-    qreal delay = vehicle->getDelay();
+    int delay = vehicle->getDelay();
     delay = delay / 5;
-    delay = std::floor(delay);
     delay = delay * 5;
 
 
-    QString str = vehicle->getId() + " " + vehicle->getCurrentStreet()->getId() + " delay: " + QString::number(delay) + "s";
-    QString infoStr = "Id: " + vehicle->getId() + "\n";
+    QString infoStr = "VEHICLE INFO\n\n";
+    infoStr += "Line: " + vehicle->getLine()->getId() + "\n";
+    infoStr += "Id: " + vehicle->getId() + "\n";
     infoStr += "Next Stop: " + vehicle->getStops().at(vehicle->getNextStopN())->getId() + "\n";
     infoStr += "Street: " + vehicle->getCurrentStreet()->getId() + "\n";
-    infoStr += "Delay: " + QString::number(delay) + "s\n";
+    auto delayTime = QTime();
+    delayTime.setHMS(0,0,0);
+    delayTime = delayTime.addSecs(delay);
+    infoStr += "Delay: " + delayTime.toString() + "\n\n";
     infoStr += "Stops:\n";
-
-    ui->listWidget->addItem(str);
-
 
     for(unsigned i = 0; i < stops.size(); i++){
 
@@ -149,33 +151,24 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
         time.setHMS(0,0,0);
         time = time.addSecs(t);
 
-        str = time.toString() + "\t" + stops.at(i)->getId();
         infoStr += stops.at(i)->getId() + " : "+ time.toString() + "\n";
-        ui->listWidget->addItem(str);
 
     }
 
     ui->infoLabel->setText(infoStr);
-
-    int nextStop = 1 + static_cast<int>(vehicle->getNextStopN());
-
-    if(nextStop < ui->listWidget->count()){
-        ui->listWidget->item(nextStop)->setBackgroundColor(Qt::red);
-    }
-
 }
 
 void MainWindow::showStreet(Street *street)
 {
-    ui->listWidget->clear();
 
-    QString str = street->getId() + " congestion degree: " + QString::number(street->getCongestionDegree());
+    QString infoStr = "STREET INFO\n\n";
+    infoStr += "Street Id: " +street->getId() + "\n";
+    infoStr += "Congestion Degree: " + QString::number(street->getCongestionDegree()) + "\n";
+    ui->infoLabel->setText(infoStr);
 
-    ui->listWidget->addItem(str);
     ui->closeStreetButton->show();
     ui->lineEditCongestion->show();
     ui->congestionButton->show();
-
 
 }
 
@@ -205,12 +198,14 @@ std::vector<Line *> MainWindow::getLines()
 
 void MainWindow::showNewRoute(Line *line, std::vector<Street *> str)
 {
-    ui->listWidget->clear();
-    ui->listWidget->addItem(line->getId());
+
+    QString infoStr = "Line Id: " + line->getId() + "\n\n";
 
     for(auto s : str){
-        ui->listWidget->addItem(s->getId());
+        infoStr += "Street Id: " + s->getId() + "\n";
     }
+
+    ui->infoLabel->setText(infoStr);
 }
 
 
@@ -297,4 +292,25 @@ void MainWindow::updateLines()
     for(auto l : lines){
         l->touch();
     }
+}
+
+void MainWindow::setMapFileName(QString name)
+{
+    this->mapFileName = name;
+}
+
+void MainWindow::setEditMode()
+{
+    ui->setRouteButton->show();
+
+    ui->closeStreetButton->hide();
+    ui->congestionButton->hide();
+    ui->lineEditCongestion->hide();
+
+}
+
+void MainWindow::setNormalMode()
+{
+    ui->setRouteButton->hide();
+    ui->infoLabel->setText("");
 }
