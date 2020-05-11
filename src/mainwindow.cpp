@@ -62,9 +62,9 @@ MainWindow::MainWindow(QWidget *parent)
      name = QFileDialog::getOpenFileName(this,
             tr("Open map file"), "",
             tr("Json files (*.json)"));
-
-     name = "../examples/map.json";
      */
+     name = "../examples/map.json";
+
 
     qDebug() << "name: " << name;
 
