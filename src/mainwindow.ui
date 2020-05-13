@@ -145,7 +145,14 @@
       <item>
        <widget class="QPushButton" name="setRouteButton">
         <property name="text">
-         <string>Set Route</string>
+         <string> Set New Route</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="clearRouteButton">
+        <property name="text">
+         <string>Clear New Route</string>
         </property>
        </widget>
       </item>

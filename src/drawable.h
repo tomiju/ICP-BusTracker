@@ -121,19 +121,24 @@ private:
 public slots:
 
     /**
-     * @brief closeStreet
+     * @brief closeStreet uzvre zvyraznenou ulici
      */
     void closeStreet();
 
     /**
-     * @brief update
+     * @brief update aktualizuje zobrazovane informace
      */
     void update();
 
     /**
-     * @brief setRoute
+     * @brief setRoute nastavi novou trasu pro danou linku
      */
     void setRoute();
+
+    /**
+     * @brief clearRoute smaze novou trasu
+     */
+    void clearRoute();
 
 };
 

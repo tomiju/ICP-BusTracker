@@ -127,6 +127,7 @@ void Drawable::showVehicleRoute(Vehicle *vehicle)
         return;
     }
 
+
     QBrush brush;
     brush.setColor(Qt::blue);
     brush.setStyle(Qt::BrushStyle::SolidPattern);
@@ -265,6 +266,12 @@ void Drawable::closeStreet()
         return;
     }
 
+    auto lineStreets = effectedLines.front()->getAllStreets();
+
+    for(auto ls :lineStreets){
+        ls->getStreetView()->highlight();
+    }
+
     mainWindow->stop();
     mainWindow->resetTime();
     mainWindow->showNewRoute(effectedLines.at(0),newStreets);
@@ -280,12 +287,23 @@ void Drawable::closeStreet()
 
 void Drawable::update()
 {
-    if(this->vehicle){
-        mainWindow->showVehicleRoute(vehicle);
-    }
-
     if(this->street){
         mainWindow->showStreet(street);
+    }
+
+    if(this->vehicle){
+        mainWindow->showVehicleRoute(vehicle);
+
+        if(vehicle->isDead()){
+            auto streets = vehicle->getLine()->getAllStreets();
+
+            for(auto s : streets){
+                s->getStreetView()->unhighlight();
+            }
+
+            vehicle = nullptr;
+        }
+
     }
 }
 
@@ -294,17 +312,49 @@ void Drawable::setRoute()
     if(effectedLines.empty()){
         return;
     }
+    auto lineStreets = effectedLines.front()->getAllStreets();
+
+    for(auto ls :lineStreets){
+        ls->getStreetView()->unhighlight();
+    }
 
     effectedLines.at(0)->setRoute(this->newStreets);
     effectedLines.erase(effectedLines.begin());
     for(auto s : newStreets){
         s->getStreetView()->unhighlight();
     }
+
     newStreets = {};
 
     if(effectedLines.empty()){
         this->editMode = false;
         mainWindow->setNormalMode();
+        this->street = nullptr;
+        return;
+    }
+
+    lineStreets = effectedLines.front()->getAllStreets();
+
+    for(auto ls :lineStreets){
+            ls->getStreetView()->highlight();
+    }
+
+}
+
+void Drawable::clearRoute()
+{
+    for(auto s : newStreets){
+        s->getStreetView()->unhighlight();
+    }
+
+    newStreets = {};
+
+    if(!effectedLines.empty()){
+        auto lineStreets = effectedLines.front()->getAllStreets();
+
+        for(auto ls :lineStreets){
+                ls->getStreetView()->highlight();
+        }
     }
 
 }

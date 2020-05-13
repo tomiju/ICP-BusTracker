@@ -45,9 +45,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->congestionButton, &QPushButton::clicked, this, &MainWindow::setCongestionDegree);
     ui->timeEdit->setDisplayFormat("hh:mm:ss");
     ui->infoLabel->setText("");
+    ui->resetButton->hide();
+
+
     ui->setRouteButton->hide();
-
-
+    ui->clearRouteButton->hide();
 
     ui->closeStreetButton->hide();
     ui->lineEditCongestion->hide();
@@ -81,6 +83,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer, &QTimer::timeout, draw, &Drawable::update);
     connect(ui->closeStreetButton, &QPushButton::clicked, draw,  &Drawable::closeStreet);
     connect(ui->setRouteButton, &QPushButton::clicked, draw,  &Drawable::setRoute);
+    connect(ui->clearRouteButton, &QPushButton::clicked, draw,  &Drawable::clearRoute);
 
     timer->setInterval(1000);
     timer->start();
@@ -302,6 +305,7 @@ void MainWindow::setMapFileName(QString name)
 void MainWindow::setEditMode()
 {
     ui->setRouteButton->show();
+    ui->clearRouteButton->show();
 
     ui->closeStreetButton->hide();
     ui->congestionButton->hide();
@@ -311,6 +315,7 @@ void MainWindow::setEditMode()
 
 void MainWindow::setNormalMode()
 {
+    ui->clearRouteButton->hide();
     ui->setRouteButton->hide();
     ui->infoLabel->setText("");
 }
