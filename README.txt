@@ -1,4 +1,4 @@
-ICP - Project 2020
+ICP - Projekt 2020
 
 "Bus tracker - Aplikace pro zobrazeni linek hromadne dopravy a sledovani jejich pohybu"
 Autori:
@@ -17,34 +17,34 @@ Popis:
 
 	2) GUI
 		Cas je zobrazovan v levem hornim rohu aplikace.
-		Pod nim se nachazi tlacitko Set Time a widget pro nastaveni casu.
+		Pod nim se nachazi tlacitko "Set Time" a widget pro nastaveni casu.
 
-		Dale pak tlacito Stop/Play pro zastaveni nebo spusteni simulace.
+		Dale pak tlacitko "Stop/Play" pro zastaveni nebo spusteni simulace.
 
-		Tlacitko Reset nastavi cas na hodnotu 0.
+		Tlacitko "Reset" nastavi cas na hodnotu 0.
 
-		Tlacitko Speed nastavi rychlost simulace o rychlosti 1:1 az 1:1000.
+		Tlacitko "Speed" nastavi rychlost simulace o rychlosti 1:1 az 1:1000.
 
-		Tacito Zoom In priblizi pohled.
+		Tlacitko "Zoom In" priblizi pohled.
 
-		Tlacito Zoom Out oddali pohled.
+		Tlacitko "Zoom Out" oddali pohled.
 
 	3) Mapa
 		Po kliknuti na vozidlo se vozidlo zvyrazni a na mape se zobrazi jeho trasa.
-		V GUI se zobrazi info o vozidle.
+		V GUI se zobrazi podrobne informace o vozidle.
 
 		Po kliknuti na ulici se ulice na mape zvyrazni.
-		V GUI se zobrazi info o ulici.
-		V GUI zobrazi tlacitko pro nastaveni hustotoy provozu Set Congestion Degree a vstup pro zadani hodnoty.
+		V GUI se zobrazi podrobne informace o ulici.
+		V GUI se zobrazi tlacitko pro nastaveni hustoty provozu "Set Congestion Degree" a vstup pro zadani hodnoty.
 			Hodnota udava kolikrat je cesta danou ulici pomalejsi.
 			Hodnota je realne cislo vetsi rovno 1. 
 			Hodnota 1 znamena normalni rychlost. Hodnota 2 znamena polovicni rychlost atd.
-		V GUI se zobrazi tlacitko Close Street, pro uzavreni ulice.
+		V GUI se zobrazi tlacitko"Close Street", ktere umozni uzavreni ulice.
 			Pokud ulici neprochazi zadna linka simulace pokracuje.
-			Pokud je jedna nebo vice linek zasazenych spusti se editacni mod.
+			Pokud je jedna nebo vice linek zasazenych uzavrenim ulice, spusti se editacni mod.
 			V tomto modu je uzivatel pozadan o definovani nove trasy pro danou linku.
 			Uzivatel trasu definuje naklikanim ulic v mape.
-			Pokud je trasa hotova uzivetl ji nastavi pomoci tlacitka Set Route.
-			Toto probehne pro vsechny trasy.
-			Pokud jsou vsechny zasazene trasy definovane program ukonci editacni mod. 
+			Pokud je trasa hotova, uzivatel ji musi potvrdit pomoci tlacitka "Set Route".
+			Toto probehne pro vsechny linky.
+			Pokud jsou vsechny zasazene linky definovane program automaticky ukonci editacni mod a simulace pokracuje. 
 			
