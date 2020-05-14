@@ -188,10 +188,13 @@ void Drawable::showStreet(Street *str)
 
     }
 
+
+
     this->vehicle = nullptr;
     this->street = str;
 
     str->getStreetView()->highlight();
+
 
     mainWindow->showStreet(street);
 }

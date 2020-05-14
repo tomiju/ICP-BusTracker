@@ -45,6 +45,24 @@ QString Vehicle::getId()
 
 void Vehicle::setRoute()
 {
+    if(nextStop == 0){
+        createSkippedStops();
+
+        while(skippedStops.at(nextStop)){
+            nextStop += 1;
+            if(nextStop >= skippedStops.size()){
+                activationTime = 100000; //nikdy
+                return;
+            }
+        }
+
+        QPointF* startingPos = line->getStop(nextStop)->getCoordinate();
+        this->c->setX(startingPos->x());
+        this->c->setY(startingPos->y());
+
+        activationTime = this->times.at(nextStop);
+
+    }
 
     time = 0;
     nextStop += 1;
@@ -159,6 +177,31 @@ void Vehicle::reset()
 
     this->txt->setX(newX);
     this->txt->setY(newY + 15);
+}
+
+std::vector<bool> Vehicle::getSkippedStops()
+{
+    return skippedStops;
+}
+
+unsigned Vehicle::getActivationTime()
+{
+    return activationTime;
+}
+
+void Vehicle::createSkippedStops()
+{
+    skippedStops = {};
+
+    for(auto stop : this->getStops()){
+        Street* str = stop->getStreet();
+
+        if(line->containsStreet(str)){
+            skippedStops.push_back(false);
+        }else{
+            skippedStops.push_back(true);
+        }
+    }
 }
 
 

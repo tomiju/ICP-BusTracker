@@ -119,6 +119,17 @@ public:
     */
    void reset();
 
+   /**
+    * @brief getSkippedStops
+    * @return vraci vektor, true = preskocena zastavka
+    */
+   std::vector<bool> getSkippedStops();
+
+   /**
+    * @brief getActivationTime vraci cas vyjezdu
+    */
+   unsigned getActivationTime();
+
 private:
    /**
     * @brief id
@@ -174,6 +185,23 @@ private:
     * @brief times
     */
    std::vector<unsigned> times;
+
+   /**
+    * @brief skippedStops
+    */
+   std::vector<bool> skippedStops;
+
+   /**
+    * @brief createSkippedStops nalezne zastavky, ktere nelezi na trase
+    */
+   void createSkippedStops();
+
+   /**
+    * @brief activationTime
+    */
+   unsigned activationTime;
+
+
 
 public slots:
 

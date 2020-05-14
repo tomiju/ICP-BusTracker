@@ -161,14 +161,11 @@ QString Line::getId()
 
 void Line::touch()
 {
-    for(unsigned i = 0; i < timetable.size(); i++){
-        if(time == timetable.at(i).at(0) ){
-            vehicle.at(i)->activate();
+    for (auto v : this->vehicle){
+        if(time == v->getActivationTime()){
+            v->activate();
         }
-    }
 
-    for (auto it = this->vehicle.begin() ; it != this->vehicle.end(); ++it){
-        Vehicle* v = *it;
         v->touch();
     }
 

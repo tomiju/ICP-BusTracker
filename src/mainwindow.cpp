@@ -147,6 +147,8 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
     infoStr += "Delay: " + delayTime.toString() + "\n\n";
     infoStr += "Stops:\n";
 
+    auto skippedStops = vehicle->getSkippedStops();
+
     for(unsigned i = 0; i < stops.size(); i++){
 
         auto t =  times.at(i);
@@ -154,7 +156,12 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
         time.setHMS(0,0,0);
         time = time.addSecs(t);
 
-        infoStr += stops.at(i)->getId() + " : "+ time.toString() + "\n";
+        QString skippedStr = "";
+        if(skippedStops.at(i)){
+            skippedStr = " (skipped)";
+        }
+
+        infoStr += stops.at(i)->getId() + " : "+ time.toString() + skippedStr +  "\n";
 
     }
 
@@ -167,11 +174,20 @@ void MainWindow::showStreet(Street *street)
     QString infoStr = "STREET INFO\n\n";
     infoStr += "Street Id: " +street->getId() + "\n";
     infoStr += "Congestion Degree: " + QString::number(street->getCongestionDegree()) + "\n";
+    infoStr += "\nStops: \n";
+
+    for(auto s : street->getStops()){
+        infoStr += s->getId() + "\n";
+    }
+
+
     ui->infoLabel->setText(infoStr);
 
     ui->closeStreetButton->show();
     ui->lineEditCongestion->show();
     ui->congestionButton->show();
+
+
 
 }
 
@@ -248,6 +264,11 @@ void MainWindow::stopPlay()
 void MainWindow::updatemainTime()
 {
     mainTime += 1;
+
+    if(mainTime == 86400){
+        resetTime();
+    }
+
     QTime time;
     time.setHMS(0,0,0);
     time = time.addSecs(mainTime);
