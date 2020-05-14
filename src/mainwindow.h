@@ -30,7 +30,7 @@ public:
      * @brief MainWindow konstrukto tridy
      * @param parent
      */
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr); 
     ~MainWindow();
 
     /**

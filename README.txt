@@ -43,8 +43,9 @@ Popis:
 			Pokud ulici neprochazi zadna linka simulace pokracuje.
 			Pokud je jedna nebo vice linek zasazenych uzavrenim ulice, spusti se editacni mod.
 			V tomto modu je uzivatel pozadan o definovani nove trasy pro danou linku.
-			Uzivatel trasu definuje naklikanim ulic v mape.
-			Pokud je trasa hotova, uzivatel ji musi potvrdit pomoci tlacitka "Set Route".
+			Po kliknuti na ulici je tato ulice pridana do trasy dane linky.
+			Po kliknuti na tlacitko "Clear New Route" muze uzivatel smazat naklikanou trasu a znova ji definovat.
+			Pokud je trasa hotova, uzivatel ji musi potvrdit pomoci tlacitka "Set New Route".
 			Toto probehne pro vsechny linky.
 			Pokud jsou vsechny zasazene linky definovane program automaticky ukonci editacni mod a simulace pokracuje. 
 			

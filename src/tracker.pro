@@ -22,7 +22,6 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     stop.cpp \
-    stopview.cpp \
     street.cpp \
     streetview.cpp \
     vehicle.cpp \
@@ -34,7 +33,6 @@ HEADERS += \
     line.h \
     mainwindow.h \
     stop.h \
-    stopview.h \
     street.h \
     streetview.h \
     vehicle.h \

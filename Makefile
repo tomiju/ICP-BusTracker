@@ -11,8 +11,10 @@ clean:
 	rm src/*.o
 	rm src/Makefile
 	rm src/icp
+	rm doc/*
 
 pack:
-	zip xjulin08_xkanto14 src/*.cpp src/*.h src/*.ui src/*.pro doc  README.txt Makefile examples/map.json
+	zip xjulin08_xkanto14 src/*.cpp src/*.h src/*.ui src/*.pro doc examples/map.json  README.txt Makefile Doxyfile
 
 doxygen:
+	doxygen Doxyfile
