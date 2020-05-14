@@ -48,12 +48,21 @@ void Vehicle::setRoute()
     if(nextStop == 0){
         createSkippedStops();
 
+        unsigned activeStops = 0;
+
+        for(auto s : skippedStops){
+            if(s == false){
+                activeStops += 1;
+            }
+        }
+
+        if(activeStops <= 1){
+            activationTime = 100000; //nikdy
+            return;
+        }
+
         while(skippedStops.at(nextStop)){
             nextStop += 1;
-            if(nextStop >= skippedStops.size()){
-                activationTime = 100000; //nikdy
-                return;
-            }
         }
 
         QPointF* startingPos = line->getStop(nextStop)->getCoordinate();
