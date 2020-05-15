@@ -71,6 +71,10 @@ void Vehicle::setRoute()
 
         activationTime = this->times.at(nextStop);
 
+        while(line->getStreet(currentStreet) != line->getStop(nextStop)->getStreet()){
+            currentStreet += 1;
+        }
+
     }
 
     time = 0;
