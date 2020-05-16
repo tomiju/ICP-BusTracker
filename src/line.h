@@ -28,40 +28,40 @@ class Line : public QObject
 public:
     /**
      * @brief Line konstruktor tridy
-     * @param id
+     * @param id identifikator linky
      */
     Line(QString id);
 
     /**
      * @brief addStreet prida ulici do linky
-     * @param str
+     * @param str ulice
      */
     void addStreet(Street* str);
 
     /**
-     * @brief addStop
-     * @param stop
+     * @brief addStop prida zastavku do linky
+     * @param stop zastavka
      */
     void addStop(Stop* stop);
 
     /**
      * @brief getStop ziska konkretni zastavku
-     * @param n
-     * @return ziskana zastavka (null kdyz je seznam prazdny)
+     * @param n poradi zastavky
+     * @return ziskana zastavka (null pokud je n mimo rozsah)
      */
     Stop* getStop(unsigned n);
 
     /**
      * @brief getStreet ziska konkretni zastavku
-     * @param n
-     * @return ziskana ulice (null kdyz je seznam prazdny)
+     * @param n poradi ulice
+     * @return ziskana ulice (null pokud je n mimo rozsah)
      */
     Street* getStreet(unsigned n);
 
     /**
      * @brief getCommonPoint zjisti spolecne souradnice ulic s indexem n1, n2
-     * @param n1
-     * @param n2
+     * @param n1 poradi ulice 1
+     * @param n2 poradi ulice 2
      * @return spolecne souradnice
      */
     QPointF* getCommonPoint(unsigned n1,unsigned n2);
@@ -91,13 +91,13 @@ public:
 
     /**
      * @brief setDrawable
-     * @param d
+     * @param d objekt Drawable
      */
     void setDrawable(Drawable* d);
 
     /**
      * @brief containsStreet zjisti, zda linka obsahuje danou ulici
-     * @param s
+     * @param s ulice
      * @return
      */
     bool containsStreet(Street* s);
@@ -116,48 +116,48 @@ public:
 
 public slots:
     /**
-     * @brief touch
+     * @brief touch aktualizuje linky a jeji vozidla
      */
     void touch();
 
 private:
     /**
-     * @brief draw
+     * @brief draw objekt Drawable
      */
     Drawable* draw;
 
     /**
-     * @brief vehicle
+     * @brief vehicle seznam vozidel
      */
     std::vector<Vehicle*> vehicle;
 
     /**
-     * @brief streets
+     * @brief streets sezname ulic
      */
     std::vector<Street*> streets;
 
     /**
-     * @brief stops
+     * @brief stops seznam zastavek
      */
     std::vector<Stop*> stops;
 
     /**
-     * @brief timetable
+     * @brief timetable jizdni rad linky
      */
     std::vector<std::vector<unsigned>> timetable;
 
     /**
-     * @brief time
+     * @brief time aktualni cas v simulaci
      */
     unsigned time;
 
     /**
-     * @brief id
+     * @brief id identifikator
      */
     QString id;
 
     /**
-     * @brief vehicleNum
+     * @brief vehicleNum poce vozidel linky
      */
     unsigned vehicleNum;
 

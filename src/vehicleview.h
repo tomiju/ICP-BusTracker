@@ -21,11 +21,11 @@ public:
     /**
      * @brief VehicleView konstruktor tridy
      * @param d
-     * @param v
-     * @param x
-     * @param y
-     * @param width
-     * @param height
+     * @param v vozidlo
+     * @param x souradnice x
+     * @param y souradnice y
+     * @param width sirka
+     * @param height vyska
      * @param parent
      */
     VehicleView(Drawable* d,Vehicle* v,qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent = nullptr);
@@ -49,10 +49,6 @@ private:
      */
     Vehicle* vehicle;
 
-    /**
-     * @brief txt
-     */
-    QGraphicsTextItem txt;
 
 };
 

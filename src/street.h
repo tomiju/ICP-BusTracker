@@ -23,9 +23,9 @@ class Street
 public:
         /**
          * @brief Street konstruktor tridy
-         * @param id
-         * @param c1
-         * @param c2
+         * @param id identifikator
+         * @param c1 souradnice zacatku ulice
+         * @param c2 souradnice konce ulice
          */
         Street(QString id, QPointF* c1, QPointF* c2);
 
@@ -37,7 +37,7 @@ public:
 
         /**
          * @brief getCoordinates ziska souradnice ulice
-         * @return seznam bodu
+         * @return seznam obsahujici zacatek a konec ulice
          */
         vector<QPointF*> getCoordinates();
 
@@ -104,39 +104,39 @@ public:
 
         /**
          * @brief isNeighbor zjisti, zda dana ulice navazuje na tuto ulici
-         * @param str
+         * @param str ulice
          * @return true/false
          */
         bool isNeighbor(Street *str);
 
     private:
         /**
-         * @brief id
+         * @brief id identifikator
          */
         QString id;
 
         /**
-         * @brief coordinates
+         * @brief coordinates souradnice zacatku a konce ulice
          */
         vector<QPointF*> coordinates;
 
         /**
-         * @brief stops
+         * @brief stops seznam zastavek
          */
         vector<Stop*> stops;
 
         /**
-         * @brief view
+         * @brief view graficka reprezentace
          */
         StreetView* view;
 
         /**
-         * @brief congestionDegree
+         * @brief congestionDegree hodnota "ucpanosti" ulice
          */
         qreal congestionDegree;
 
         /**
-         * @brief closed
+         * @brief closed uavrenost ulice
          */
         bool closed;
 

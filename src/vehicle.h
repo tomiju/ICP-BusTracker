@@ -41,20 +41,20 @@ public:
 
    /**
     * @brief Vehicle konstruktor tridy
-    * @param id
-    * @param c
-    * @param line
-    * @param t
+    * @param id identifikator
+    * @param c souradnice vozidla
+    * @param line linka, do ktere vozidlo patri
+    * @param t casy pro jednotlive zastavky
     */
    Vehicle(QString id, QPointF* c,Line* line,std::vector<unsigned> t);
 
    /**
-    * @brief elipse
+    * @brief elipse graficka reprezentace vozidla
     */
    VehicleView* elipse;
 
    /**
-    * @brief txt
+    * @brief txt textova reprezentace prislusne linky
     */
    QGraphicsTextItem* txt;
 
@@ -99,17 +99,17 @@ public:
    qreal getDelay();
 
    /**
-    * @brief kill skryje vozidlo
+    * @brief kill skryje vozidlo, pozice se nyni neaktualizuje
     */
    void kill();
 
    /**
-    * @brief activate zobrazi vozidlo
+    * @brief activate zobrazi vozidlo, aktivuje aktualizaci vozdila
     */
    void activate();
 
    /**
-    * @brief isDead zjisti, zda je vozidlo skryte
+    * @brief isDead zjisti, zda je vozidlo neaktivni
     * @return true/false
     */
    bool isDead();
@@ -126,68 +126,68 @@ public:
    std::vector<bool> getSkippedStops();
 
    /**
-    * @brief getActivationTime vraci cas vyjezdu
+    * @brief getActivationTime vraci cas, kdz je vozidlo na prvni zastavce
     */
    unsigned getActivationTime();
 
 private:
    /**
-    * @brief id
+    * @brief id identifikator
     */
    QString id;
 
    /**
-    * @brief c
+    * @brief c aktualni poloha
     */
    QPointF* c;
 
    /**
-    * @brief line
+    * @brief line prislusna linka
     */
    Line* line;
 
    /**
-    * @brief dead
+    * @brief dead znaci zda je vozidlo neaktivni
     */
    bool dead;
 
    /**
-    * @brief time
+    * @brief time cas straveny na aktualni trase
     */
    qreal time;
 
    /**
-    * @brief routeTime
+    * @brief routeTime ocekavany cas cesty mezi zastavkami
     */
    unsigned routeTime;
 
    /**
-    * @brief delay
+    * @brief delay zpozdeni vozidla
     */
    qreal delay;
 
    /**
-    * @brief currentStreet
+    * @brief currentStreet soucasna ulice
     */
    unsigned currentStreet;
 
    /**
-    * @brief nextStop
+    * @brief nextStop poradi pristi zastaky
     */
    unsigned nextStop;
 
    /**
-    * @brief path
+    * @brief path aktualni trasa vozidla mezi minulou a pristi zastavkou
     */
    QPainterPath* path;
 
    /**
-    * @brief times
+    * @brief times casy pro jednotlive zastavky (jizdni rad)
     */
    std::vector<unsigned> times;
 
    /**
-    * @brief skippedStops
+    * @brief skippedStops preskocene zastavky
     */
    std::vector<bool> skippedStops;
 
@@ -197,7 +197,7 @@ private:
    void createSkippedStops();
 
    /**
-    * @brief activationTime
+    * @brief activationTime cas prvni zastavky
     */
    unsigned activationTime;
 

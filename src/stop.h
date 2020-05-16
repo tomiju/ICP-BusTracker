@@ -44,8 +44,8 @@ public:
 
    /**
     * @brief Stop konstruktor tridy
-    * @param id
-    * @param c
+    * @param id identifikator
+    * @param c souradnice ulice
     */
    Stop(QString id, QPointF* c);
 
@@ -58,17 +58,17 @@ public:
 
 private:
    /**
-    * @brief id
+    * @brief id identifikator
     */
    QString id;
 
    /**
-    * @brief c
+    * @brief c souradnice
     */
    QPointF* c;
 
    /**
-    * @brief s
+    * @brief s ulice
     */
    Street* s;
 

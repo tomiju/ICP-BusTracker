@@ -4,7 +4,7 @@ all:
 	make && \
 	mv tracker icp
 
-run:
+run: all
 	./src/icp
 
 clean:

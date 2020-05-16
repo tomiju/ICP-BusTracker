@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->setTimeButton, &QPushButton::clicked,this,&MainWindow::setTime);
     connect(ui->congestionButton, &QPushButton::clicked, this, &MainWindow::setCongestionDegree);
     ui->timeEdit->setDisplayFormat("hh:mm:ss");
-    ui->infoLabel->setText("");
+    ui->infoLabel->setText("INFO");
     ui->resetButton->hide();
 
 
@@ -118,7 +118,7 @@ void MainWindow::restart()
 void MainWindow::showVehicleRoute(Vehicle *vehicle)
 {
 
-    ui->infoLabel->setText("");
+    ui->infoLabel->setText("INFO");
 
     ui->closeStreetButton->hide();
     ui->lineEditCongestion->hide();
@@ -318,10 +318,6 @@ void MainWindow::updateLines()
     }
 }
 
-void MainWindow::setMapFileName(QString name)
-{
-    this->mapFileName = name;
-}
 
 void MainWindow::setEditMode()
 {

@@ -67,7 +67,7 @@ void Drawable::drawStop(Stop* stop)
     auto ellipse = scene->addEllipse(x - 10, y - 10 , 20, 20);
 
     QBrush brush;
-    brush.setColor(Qt::white);
+    brush.setColor("#666666");
     brush.setStyle(Qt::BrushStyle::SolidPattern);
 
     QPen pen;
@@ -114,7 +114,6 @@ void Drawable::drawVehicle(Vehicle *vehicle)
     QGraphicsTextItem* name = scene->addText(vehicle->getLine()->getId());
     name->setX(p->x());
     name->setY(p->y() + 10);
-    name->setDefaultTextColor(Qt::blue);
 
     vehicle->txt = name;
 
@@ -187,8 +186,6 @@ void Drawable::showStreet(Street *str)
         }
 
     }
-
-
 
     this->vehicle = nullptr;
     this->street = str;
@@ -296,17 +293,6 @@ void Drawable::update()
 
     if(this->vehicle){
         mainWindow->showVehicleRoute(vehicle);
-
-        if(vehicle->isDead()){
-            auto streets = vehicle->getLine()->getAllStreets();
-
-            for(auto s : streets){
-                s->getStreetView()->unhighlight();
-            }
-
-            vehicle = nullptr;
-        }
-
     }
 }
 
@@ -332,6 +318,8 @@ void Drawable::setRoute()
     if(effectedLines.empty()){
         this->editMode = false;
         mainWindow->setNormalMode();
+        mainWindow->stopPlay();
+
         this->street = nullptr;
         return;
     }

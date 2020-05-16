@@ -67,7 +67,7 @@
     "lines": 
       [
         {
-          "id": "l1",
+          "id": "L1",
           "stops": ["s1","s2","s3","s4","s5","s6"],
           "streets" : ["str1","str2","str3","str4","str5","str6","str13","str14","str15","str16"],
           "timetable":
@@ -86,7 +86,7 @@
             ]
         },
         {
-          "id": "l2",
+          "id": "L2",
           "stops": ["s12","s13","s14","s15","s6"],
           "streets" : ["str25","str12","str6","str17","str18","str19","str16"],
           "timetable":
@@ -105,7 +105,7 @@
             ]
         },
         {
-          "id": "l3",
+          "id": "L3",
           "stops": ["s7","s8","s9","s10","s11"],
           "streets" : ["str9","str10","str11","str12","str6","str7","str20","str21","str22"],
           "timetable":

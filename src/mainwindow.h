@@ -50,13 +50,13 @@ public:
 
     /**
      * @brief showVehicleRoute zobrazi trasu nakliknuteho vozidla a vypise informace o nem
-     * @param vehicle
+     * @param vehicle vozidlo
      */
     void showVehicleRoute(Vehicle *vehicle);
 
     /**
      * @brief showStreet zobrazi informace o nakliknute ulici
-     * @param street
+     * @param street ulici
      */
     void showStreet(Street *street);
 
@@ -114,12 +114,6 @@ public slots:
     void updateLines();
 
     /**
-     * @brief setMapFileName nastavi cestu k souboru s mapou
-     * @param name nazev soubru s mapou
-     */
-    void setMapFileName(QString name);
-
-    /**
      * @brief setEditMode nastavi vzhled okna pro zobrazeni editace
      */
     void setEditMode();
@@ -131,17 +125,17 @@ public slots:
 
 private:
     /**
-     * @brief ui
+     * @brief ui uzivatelske rozhrani okna
      */
     Ui::MainWindow *ui;
 
     /**
-     * @brief timer
+     * @brief timer casovac
      */
     QTimer* timer;
 
     /**
-     * @brief mainTime
+     * @brief mainTime aktualni cas v simulaci
      */
     unsigned mainTime;
 
@@ -151,14 +145,10 @@ private:
     Drawable* drawable;
 
     /**
-     * @brief lines
+     * @brief lines seznam linek
      */
     std::vector<Line*> lines;
 
-    /**
-     * @brief mapFileName
-     */
-    QString mapFileName;
 
 };
 #endif // MAINWINDOW_H

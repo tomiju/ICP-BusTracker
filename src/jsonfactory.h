@@ -23,8 +23,8 @@ class JsonFactory
 public:
     /**
      * @brief JsonFactory konstruktor tridy
-     * @param name
-     * @param d
+     * @param name nazev souboru s mapovym podkladem a jizdnimi rady
+     * @param d objekt drawable pro vytvareni graficke reprezentace objektu
      */
     JsonFactory(QString name, Drawable* d);
 
@@ -49,46 +49,46 @@ public:
 
 private:
     /**
-     * @brief drawable
+     * @brief drawable objekt drawable pro vytvareni graficke reprezentace objektu
      */
     Drawable* drawable;
 
     /**
-     * @brief lines
+     * @brief lines seznam vytvorenych linek
      */
     std::vector<Line*> lines;
 
     /**
-     * @brief streets
+     * @brief streets seznam vytvorenych ulic
      */
     std::vector<Street*> streets;
 
     /**
-     * @brief stops
+     * @brief stops seznam vytvorenych zastavek
      */
     std::vector<Stop*> stops;
 
     /**
      * @brief createStreets vytvori ulice ze vstupnich dat
-     * @param obj
+     * @param obj hlavni objekt souboru
      */
     void createStreets(QJsonObject* obj);
 
     /**
      * @brief createStops vytvori zastavky ze vstupnich dat
-     * @param obj
+     * @param obj hlavni objekt souboru
      */
     void createStops(QJsonObject* obj);
 
     /**
      * @brief createLines vytvori linky ze vstupnich dat
-     * @param obj
+     * @param obj hlavni objekt souboru
      */
     void createLines(QJsonObject* obj);
 
     /**
      * @brief createTimeTable vytvori jizdni rad ze vstupnich dat
-     * @param arr
+     * @param arr 2d pole obsahujici jizdni rad
      * @return jizdni rad
      */
     std::vector<std::vector<QString>> createTimeTable(QJsonArray arr);

@@ -24,8 +24,8 @@ class Drawable : public QObject
 public:
     /**
      * @brief Drawable konstruktor tridy
-     * @param s
-     * @param mw
+     * @param s scena pro vykresleni mapy
+     * @param mw hlavni okno aplikace
      */
     Drawable(QGraphicsScene* s,MainWindow* mw);
 
@@ -79,42 +79,42 @@ public:
 
 private:
     /**
-     * @brief mainWindow
+     * @brief mainWindow hlavni okno aplikace
      */
     MainWindow* mainWindow;
 
     /**
-     * @brief scene
+     * @brief scene scena pro vykresleni mapy
      */
     QGraphicsScene* scene;
 
     /**
-     * @brief vehicle
+     * @brief vehicle vozidlo zvyrazne na mape
      */
     Vehicle* vehicle;
 
     /**
-     * @brief line
+     * @brief line linka zvyraznena na mape
      */
     Line* line;
 
     /**
-     * @brief street
+     * @brief street ulice zvyraznena na mape
      */
     Street* street;
 
     /**
-     * @brief editMode
+     * @brief editMode znaci zda, je aplikace v editacnim modu
      */
     bool editMode;
 
     /**
-     * @brief newStreets
+     * @brief newStreets novy vytvareny seznam ulic (trasa) pro linku
      */
     std::vector<Street*> newStreets;
 
     /**
-     * @brief effectedLines
+     * @brief effectedLines linky ovlivnene uzavrenim ulice
      */
     std::vector<Line*> effectedLines;
 
