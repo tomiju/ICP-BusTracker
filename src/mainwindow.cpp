@@ -26,6 +26,7 @@
 #include <QTimer>
 #include <QTime>
 #include <QFileDialog>
+#include <QMovie>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -46,6 +47,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->timeEdit->setDisplayFormat("hh:mm:ss");
     ui->infoLabel->setText("INFO");
     ui->resetButton->hide();
+
+    ui->gifLabel->setText("Simulation is running");
+
+
+
 
 
     ui->setRouteButton->hide();
@@ -208,6 +214,7 @@ void MainWindow::stop()
 {
     this->timer->stop();
     this->ui->stopPlayButton->setText("Play");
+    ui->gifLabel->setText("Simulation is stopped");
 }
 
 std::vector<Line *> MainWindow::getLines()
@@ -254,9 +261,10 @@ void MainWindow::stopPlay()
     if(this->timer->isActive()){
         this->timer->stop();
         ui->stopPlayButton->setText("Play");
+        ui->gifLabel->setText("Simulation is stopped");
     }else{
         this->timer->start();
-        ui->stopPlayButton->setText("Stop");
+        ui->gifLabel->setText("Simulation is running");
     }
 }
 
