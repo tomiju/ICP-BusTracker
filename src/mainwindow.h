@@ -58,7 +58,7 @@ public:
      * @brief showStreet zobrazi informace o nakliknute ulici
      * @param street ulici
      */
-    void showStreet(Street *street);
+    void showStreet(Street *street,bool firstTime);
 
     /**
      * @brief setCongestionDegree nastavi "ucpanost" ulice

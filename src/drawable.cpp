@@ -193,7 +193,7 @@ void Drawable::showStreet(Street *str)
     str->getStreetView()->highlight();
 
 
-    mainWindow->showStreet(street);
+    mainWindow->showStreet(street,true);
 }
 
 void Drawable::setCongestionDegree(qreal d)
@@ -288,7 +288,7 @@ void Drawable::closeStreet()
 void Drawable::update()
 {
     if(this->street){
-        mainWindow->showStreet(street);
+        mainWindow->showStreet(street,false);
     }
 
     if(this->vehicle){
