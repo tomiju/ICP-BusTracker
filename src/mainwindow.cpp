@@ -46,7 +46,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->congestionButton, &QPushButton::clicked, this, &MainWindow::setCongestionDegree);
     ui->timeEdit->setDisplayFormat("hh:mm:ss");
     ui->infoLabel->setText("INFO");
-    ui->infoLabel->setTextFormat(Qt::RichText);
     ui->resetButton->hide();
 
     ui->gifLabel->setText("Simulation is running");
@@ -143,26 +142,16 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
     delay = delay * 5;
 
 
-    QString infoStr = "VEHICLE INFO<br><br>";
-    infoStr += "Line: " + vehicle->getLine()->getId() + "<br>";
-    infoStr += "Id: " + vehicle->getId() + "<br>";
-    infoStr += "Next Stop: " + vehicle->getStops().at(vehicle->getNextStopN())->getId() + "<br>";
-    infoStr += "Street: " + vehicle->getCurrentStreet()->getId() + "<br>";
+    QString infoStr = "VEHICLE INFO\n\n";
+    infoStr += "Line: " + vehicle->getLine()->getId() + "\n";
+    infoStr += "Id: " + vehicle->getId() + "\n";
+    infoStr += "Next Stop: " + vehicle->getStops().at(vehicle->getNextStopN())->getId() + "\n";
+    infoStr += "Street: " + vehicle->getCurrentStreet()->getId() + "\n";
     auto delayTime = QTime();
     delayTime.setHMS(0,0,0);
     delayTime = delayTime.addSecs(delay);
-    infoStr += "Delay: " + delayTime.toString() + "<br><br>";
-    infoStr += "Stops:<br><br>";
-
-    QString divStart = "<span style = \"color:#909090;\">";
-    QString divEnd = "</span>";
-
-
-    infoStr += divStart;
-
-
-
-
+    infoStr += "Delay: " + delayTime.toString() + "\n\n";
+    infoStr += "Stops:\n";
 
     auto skippedStops = vehicle->getSkippedStops();
 
@@ -176,49 +165,35 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
         QString skippedStr = "";
         if(skippedStops.at(i)){
             skippedStr = " (skipped)";
-            infoStr += divStart;
         }
 
-        if(vehicle->getNextStopN() == i){
-            infoStr += divEnd;
+        infoStr += stops.at(i)->getId() + " : "+ time.toString() + skippedStr +  "\n";
 
-        }
-
-        infoStr += stops.at(i)->getId() + " : "+ time.toString() + skippedStr +  "<br>";
-
-        if(skippedStops.at(i)){
-            infoStr += divEnd;
-        }
     }
 
     ui->infoLabel->setText(infoStr);
-
 }
 
-void MainWindow::showStreet(Street *street,bool firstTime)
+void MainWindow::showStreet(Street *street)
 {
 
-    QString infoStr = "STREET INFO<br><br>";
-    infoStr += "Street Id: " +street->getId() + "<br>";
-    infoStr += "Congestion Degree: " + QString::number(street->getCongestionDegree()) + "<br>";
-    infoStr += "\nStops: <br>";
+    QString infoStr = "STREET INFO\n\n";
+    infoStr += "Street Id: " +street->getId() + "\n";
+    infoStr += "Congestion Degree: " + QString::number(street->getCongestionDegree()) + "\n";
+    infoStr += "\nStops: \n";
 
     for(auto s : street->getStops()){
-        infoStr += s->getId() + "<br>";
+        infoStr += s->getId() + "\n";
     }
 
 
     ui->infoLabel->setText(infoStr);
 
-    ui->congestionButton->show();
     ui->closeStreetButton->show();
-
     ui->lineEditCongestion->show();
-    if(firstTime){
-        ui->lineEditCongestion->setText("");
-        ui->lineEditCongestion->setPlaceholderText(QString::number(street->getCongestionDegree()));
+    ui->congestionButton->show();
 
-    }
+
 
 }
 
@@ -228,12 +203,9 @@ void MainWindow::setCongestionDegree()
 
     qreal degree = str.toDouble();
     if(degree < 1){
-        ui->lineEditCongestion->setPlaceholderText("Number >= 1.0");
-        ui->lineEditCongestion->setText("");
+        ui->lineEditCongestion->setText("Must be number greater or equal to 1");
     }else{
         drawable->setCongestionDegree(degree);
-        ui->lineEditCongestion->setPlaceholderText(ui->lineEditCongestion->text());
-        ui->lineEditCongestion->setText("");
     }
 
 }
@@ -253,10 +225,10 @@ std::vector<Line *> MainWindow::getLines()
 void MainWindow::showNewRoute(Line *line, std::vector<Street *> str)
 {
 
-    QString infoStr = "Line Id: " + line->getId() + "<br><br>";
+    QString infoStr = "Line Id: " + line->getId() + "\n\n";
 
     for(auto s : str){
-        infoStr += "Street Id: " + s->getId() + "<br>";
+        infoStr += "Street Id: " + s->getId() + "\n";
     }
 
     ui->infoLabel->setText(infoStr);
@@ -292,7 +264,6 @@ void MainWindow::stopPlay()
         ui->gifLabel->setText("Simulation is stopped");
     }else{
         this->timer->start();
-        ui->stopPlayButton->setText("Stop");
         ui->gifLabel->setText("Simulation is running");
     }
 }
