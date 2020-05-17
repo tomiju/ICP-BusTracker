@@ -174,7 +174,7 @@ void MainWindow::showVehicleRoute(Vehicle *vehicle)
     ui->infoLabel->setText(infoStr);
 }
 
-void MainWindow::showStreet(Street *street)
+void MainWindow::showStreet(Street *street,bool firstTime)
 {
 
     QString infoStr = "STREET INFO\n\n";
@@ -193,6 +193,12 @@ void MainWindow::showStreet(Street *street)
     ui->lineEditCongestion->show();
     ui->congestionButton->show();
 
+    if(firstTime){
+            ui->lineEditCongestion->setText("");
+            ui->lineEditCongestion->setPlaceholderText(QString::number(street->getCongestionDegree()));
+
+        }
+
 
 
 }
@@ -203,9 +209,12 @@ void MainWindow::setCongestionDegree()
 
     qreal degree = str.toDouble();
     if(degree < 1){
-        ui->lineEditCongestion->setText("Must be number greater or equal to 1");
+        ui->lineEditCongestion->setPlaceholderText("Number >= 1.0");
+        ui->lineEditCongestion->setText("");
     }else{
         drawable->setCongestionDegree(degree);
+        ui->lineEditCongestion->setPlaceholderText(ui->lineEditCongestion->text());
+        ui->lineEditCongestion->setText("");
     }
 
 }
