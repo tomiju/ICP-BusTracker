@@ -1,6 +1,7 @@
 # ICP - Projekt 2020
 ### Hodnocení: 90/100
 "Bus tracker - Aplikace pro zobrazeni linek hromadne dopravy a sledovani jejich pohybu"
+* Spuštění: `make run`
 --------
 
 ### Autori:
